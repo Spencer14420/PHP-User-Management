@@ -14,19 +14,22 @@
     session_start();
     $loggedInUser = $currentUser->username;
 
+    //Require "renameusers", "deleteusers" or "groupusers
+    if (!$currentUser->hasPerm("renameusers") OR !$currentUser->hasPerm("deleteusers") OR !$currentUser->hasPerm("groupusers")) {
+        exit("You do not have permission to view this page");
+    }
+
     //Process rename form
     if (isset($_POST['csrf']) AND isset($_POST['newname']) AND isset($_GET['action']) AND isset($_GET['user'])) {
         //Validate token
         if ($_POST['csrf'] === $_SESSION["rename" . $_GET['user']]) {
-            echo "VALIDATED";
+            //Rename user
+            $query = $mysqli->prepare("UPDATE users SET username = ? WHERE username = ?");
+            $query->bind_param("ss", $_POST['newname'], $_GET['user']);
+            $query->execute();
+            echo "<b>Success</b><br><br><b>{$_GET['user']}</b> has been renamed to <b>{$_POST['newname']}</b>";
             exit();
         }
-        echo "not validated";
-    }
-
-    //Require "renameusers", "deleteusers" or "groupusers
-    if (!$currentUser->hasPerm("renameusers") OR !$currentUser->hasPerm("deleteusers") OR !$currentUser->hasPerm("groupusers")) {
-        exit("You do not have permission to view this page");
     }
 
     if (!isset($_GET['action'])) {
