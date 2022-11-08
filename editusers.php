@@ -25,6 +25,15 @@
     if (isset($_POST['csrf']) AND isset($_POST['newname']) AND isset($_GET['action']) AND isset($_GET['user'])) {
         //Validate token
         if ($_POST['csrf'] === $_SESSION["rename" . $_GET['user']]) {
+            //Check if username is taken
+            $query = $mysqli->prepare("SELECT * FROM users WHERE username = ?");
+            $query->bind_param("s", $_POST['newname']);
+            $query->execute();
+            $result = $query->get_result();
+            if (mysqli_num_rows($result) > 0) {
+                exit("<b>Error</b>: An account with the username \"<b>{$_POST['newname']}</b>\" already exists");
+            }
+
             //Rename user
             $query = $mysqli->prepare("UPDATE users SET username = ? WHERE username = ?");
             $query->bind_param("ss", $_POST['newname'], $_GET['user']);
