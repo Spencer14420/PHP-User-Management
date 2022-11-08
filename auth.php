@@ -11,6 +11,7 @@ class User {
     public $userid;
     public $username;
     public $userPerms;
+    public $groups;
 
     public function setUserid($username, $mysqli) {
         $query = $mysqli->prepare("SELECT id FROM users WHERE username = ?");
@@ -33,8 +34,24 @@ class User {
         $this->username = $username;
     }
 
+    public function setGroups($mysqli) {
+        $query = $mysqli->prepare("SELECT groupname FROM groups WHERE userid = ?");
+        $query->bind_param("i", $this->userid);
+        $query->execute();
+        $result = $query->get_result();
+        $groups = [];
+        while ($row = $result->fetch_assoc()) {
+            $groups[] = $row['groupname'];
+        }
+        $this->groups = $groups;
+    }
+
     public function hasPerm($perm) {
         return in_array($perm, $this->userPerms);
+    }
+
+    public function inGroup($group) {
+        return in_array($group, $this->groups);
     }
 }
 
@@ -59,16 +76,8 @@ function auth($currentUser, $mysqli, $perms) {
     $currentUser->setUserid($username, $mysqli);
 
     //Get explicitly set groups
-    $query = $mysqli->prepare("SELECT groupname FROM groups WHERE userid = ?");
-    $query->bind_param("i", $currentUser->userid);
-    $query->execute();
-    $result = $query->get_result();
-    $groups = [];
-    while ($row = $result->fetch_assoc()) {
-        $groups[] = $row['groupname'];
-    }
-
-    $currentUser->setPerms($perms, $groups);
+    $currentUser->setGroups($mysqli);
+    $currentUser->setPerms($perms, $currentUser->groups);
 }
 
 auth($currentUser, $mysqli, $perms);

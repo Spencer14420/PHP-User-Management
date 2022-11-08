@@ -19,7 +19,9 @@
         exit("You do not have permission to view this page");
     }
 
-    //Process rename form
+    //---Form scripts--->
+
+    //Rename
     if (isset($_POST['csrf']) AND isset($_POST['newname']) AND isset($_GET['action']) AND isset($_GET['user'])) {
         //Validate token
         if ($_POST['csrf'] === $_SESSION["rename" . $_GET['user']]) {
@@ -32,24 +34,19 @@
         }
     }
 
+    //Groups
+    if (isset($_POST['csrf']) AND isset($_GET['action']) AND isset($_GET['user'])) {
+        //Validate token
+        if ($_POST['csrf'] === $_SESSION["editgroups" . $_GET['user']]) {
+            exit();
+        }
+    }
+
+    //<--- ---
+
     if (!isset($_GET['action'])) {
         //List usernames and controls
-        $query = $mysqli->prepare("SELECT username FROM users");
-        $query->execute();
-        $result = $query->get_result();
-        while ($row = $result->fetch_assoc()) {
-            echo "<b>". $row['username'] ."</b>";
-            if ($currentUser->hasPerm("renameusers")) {
-                echo " <a href=editusers.php?action=rename&user={$row['username']}>(Rename)</a>";
-            }
-            if ($currentUser->hasPerm("deleteusers")) {
-                echo " <a href=editusers.php?action=delete&user={$row['username']}>(Delete)</a>";
-            }
-            if ($currentUser->hasPerm("groupusers")) {
-                echo " <a href=editusers.php?action=editgroups&user={$row['username']}>(Edit groups)</a>";
-            }
-            echo "<br><br>";
-        }
+        include_once "userlist.php";
         exit();
     }
 
@@ -61,7 +58,9 @@
     //without overwriting each others' tokens
     $_SESSION[$_GET['action'] . $_GET['user']] = $csrf;
 
-    //Rename interface
+    //---Edit interfaces-->
+
+    //Rename
     if ($_GET['action'] === "rename") {
         echo "Rename <b>{$_GET['user']}</b><br><br>";
         echo "<form action='editusers.php?action=rename&user={$_GET['user']}' method='POST'>";
@@ -73,15 +72,41 @@
         
     }
 
-    //Delete interface
+    //Delete
     if ($_GET['action'] === "delete") {
         echo "Delete <b>{$_GET['user']}</b>";
     }
 
-    //Groups interface
+    //Groups
     if ($_GET['action'] === "editgroups") {
-        echo "Add or remove <b>{$_GET['user']}</b> from groups";
+        require_once "defaultPerms.php";
+
+        //Create user object for user being edited
+        $selectedUser = new User();
+        $selectedUser->setUserid($_GET['user'], $mysqli);
+        $selectedUser->setGroups($mysqli);
+
+
+        echo "Add or remove <b>{$_GET['user']}</b> from groups<br><br>";
+        echo "<form action='editusers.php?action=editgroups&user={$_GET['user']}' method='POST'>";
+
+        //List group checkboxes
+        foreach($perms as $key => $perm) {
+            if ($key !== "all") {
+                echo "<input type='checkbox' id='{$key}' name='{$key}' value='true' ";
+                //Check the box if user is already in group
+                if ($selectedUser->inGroup($key)) {
+                    echo "checked";
+                }
+                echo "><label for='{$key}'>{$key}</label><br>";
+            }
+        }
+        echo "<input type='hidden' id='csrf' name='csrf' value='{$_SESSION[$_GET['action'] . $_GET['user']]}'>";
+        echo "<input type='submit'>";
+        echo "</form>";
     }
+
+    //<--- ---
     ?>
 
 </body>
