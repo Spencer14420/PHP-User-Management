@@ -35,11 +35,13 @@
             }
 
             //Rename user
-            $query = $mysqli->prepare("UPDATE users SET username = ? WHERE username = ?");
-            $query->bind_param("ss", $_POST['newname'], $_GET['user']);
-            $query->execute();
-            echo "<b>Success</b><br><br><b>{$_GET['user']}</b> has been renamed to <b>{$_POST['newname']}</b>";
-            exit();
+            if ($currentUser->hasPerm("renameusers")) {
+                $query = $mysqli->prepare("UPDATE users SET username = ? WHERE username = ?");
+                $query->bind_param("ss", $_POST['newname'], $_GET['user']);
+                $query->execute();
+                echo "<b>Success</b><br><br><b>{$_GET['user']}</b> has been renamed to <b>{$_POST['newname']}</b>";
+                exit();
+            }
         }
     }
 
