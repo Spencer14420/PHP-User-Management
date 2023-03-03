@@ -6,6 +6,8 @@ if ($currentUser->hasPerm("createaccount")) {
     echo "<form id='form' action='createaccount.php' method='POST'>",
         "<label for='username'>Username: </label>",
         "<input required type='text' id='username' name='username'><br><br>",
+        "<label for='email'>Email address: </label>",
+        "<input required type='text' id='email' name='email'><br><br>",
         "<label for='pass'>Password: </label>",
         "<input required type='password' id='pass' name='pass'><br><br>",
         "<label for='pass2'>Confirm password: </label>",
