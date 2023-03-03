@@ -1,0 +1,5 @@
+<?php
+
+$domain = "capanda.ca";
+
+?>

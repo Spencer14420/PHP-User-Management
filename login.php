@@ -1,5 +1,6 @@
 <?php
 require_once "mysql.php";
+require_once "systemSettings.php";
 
 $query = $mysqli->prepare("SELECT password FROM users WHERE username = ?");
 $query->bind_param("s", $_POST['username']);
@@ -19,7 +20,7 @@ if (!password_verify($_POST['pass'], $correctPass)) {
 
 //Generate token and store it as a cookie
 $token = hash("sha256", random_bytes(265));
-setcookie("sp-token", $token, 0, "/", "localhost");
+setcookie("sp-token", $token, 0, "/", $domain);
 
 //Store hashed token in database
 $hashtoken = hash("sha256", $token);
