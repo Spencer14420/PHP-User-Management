@@ -1,6 +1,6 @@
 <?php
 
-require_once "auth.php";
+require_once "../auth.php";
 
 if ($currentUser->hasPerm("createaccount")) {
     echo "<form id='form' action='createaccount.php' method='POST'>",
