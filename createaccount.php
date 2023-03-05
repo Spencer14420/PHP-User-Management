@@ -1,8 +1,11 @@
 <?php
 require_once "mysql.php";
 require_once "auth.php";
+require_once "systemSettings.php";
 
-$hashpass = password_hash($_POST['pass'], PASSWORD_DEFAULT);
+if (isset($_POST['pass'])) {
+    $hashpass = password_hash($_POST['pass'], PASSWORD_DEFAULT);
+}
 
 //Check if user has "createaccount" perm
 if (!$currentUser->hasPerm("createaccount")) {
@@ -33,8 +36,13 @@ if (mysqli_num_rows($result) > 0) {
     exit();
 }
 
-$query = $mysqli->prepare("INSERT INTO users (username, password, email) VALUES (?, ?, ?)");
-$query->bind_param("sss", $_POST['username'], $hashpass, $_POST['email']);
+if (!$nopassMode) {
+    $query = $mysqli->prepare("INSERT INTO users (username, password, email) VALUES (?, ?, ?)");
+    $query->bind_param("sss", $_POST['username'], $hashpass, $_POST['email']);
+} else {
+    $query = $mysqli->prepare("INSERT INTO users (username, email) VALUES (?, ?)");
+    $query->bind_param("ss", $_POST['username'], $_POST['email']);
+}
 $query->execute();
 echo "Your account has been created!<br><br>",
 "<a href='index.php'>Log in</a>"
