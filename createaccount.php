@@ -3,7 +3,7 @@ require_once "mysql.php";
 require_once "auth.php";
 require_once "systemSettings.php";
 
-if (isset($_POST['pass'])) {
+if (!$nopassMode) {
     $hashpass = password_hash($_POST['pass'], PASSWORD_DEFAULT);
 }
 
