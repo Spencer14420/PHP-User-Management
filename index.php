@@ -14,17 +14,16 @@
     include_once "userHeader.php";
     $loggedInUser = $currentUser->username;
 
+    //Createaccount form
+    if (isset($_GET['action'])) {
+        if ($_GET['action'] === "createaccount") {
+            include_once "forms/createaccountForm.php";
+            exit();
+        }
+    }
+
     //Shown to logged out users
     if (!$loggedInUser) {
-
-        //Createaccount form
-        if (isset($_GET['action'])) {
-            if ($_GET['action'] === "createaccount") {
-                include_once "forms/createaccountForm.php";
-                exit();
-            }
-        }
-
         //Nopass login form
         if ($nopassMode) {
             include_once "forms/nopassloginForm.php";
@@ -33,6 +32,7 @@
 
         //Regular login form
         include_once "forms/loginForm.php";
+        exit();
     }
     ?>
 </body>
