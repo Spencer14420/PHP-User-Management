@@ -1,6 +1,6 @@
 <?php
-require_once "mysql.php";
-require_once "defaultPerms.php";
+require_once __DIR__."/../config/mysql.php";
+require_once __DIR__."/../config/defaultPerms.php";
 
 $currentUser = new User();
 $currentUser->setUsername(false);

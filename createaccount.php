@@ -1,7 +1,7 @@
 <?php
-require_once "mysql.php";
-require_once "auth.php";
-require_once "systemSettings.php";
+require_once __DIR__."/config/mysql.php";
+require_once __DIR__."/includes/auth.php";
+require_once __DIR__."/config/systemSettings.php";
 
 if (!$nopassMode) {
     $hashpass = password_hash($_POST['pass'], PASSWORD_DEFAULT);

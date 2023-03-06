@@ -8,32 +8,35 @@
 </head>
 <body>
     <?php
-    require_once "auth.php";
-    require_once "mysql.php";
-    require_once "systemSettings.php";
-    include_once "userHeader.php";
-    $loggedInUser = $currentUser->username;
+    require_once __DIR__."/includes/auth.php";
+    require_once __DIR__."/config/mysql.php";
+    require_once __DIR__."/config/systemSettings.php";
+    include_once __DIR__."/includes/userHeader.php";
+    include_once __DIR__."/includes/forms.php";
 
     //Createaccount form
     if (isset($_GET['action'])) {
         if ($_GET['action'] === "createaccount") {
-            include_once "forms/createaccountForm.php";
-            exit();
+            if ($nopassMode) {
+                $nopasscreateaccountForm->setAction("createaccount.php");
+                $nopasscreateaccountForm->echoForm();
+            } else {
+                $createaccountForm->setAction("createaccount.php");
+                $createaccountForm->echoForm();
+            }
+        } elseif ($_GET['action'] === "login") {
+            if ($nopassMode) {
+                //Nopass login form
+                $nopassloginForm->setAction("nopassLogin.php?verify=1");
+                $nopassloginForm->echoForm();
+            } else {
+                //Regular login form
+                $loginForm->setAction("login.php");
+                $loginForm->echoForm();
+            }
         }
     }
 
-    //Shown to logged out users
-    if (!$loggedInUser) {
-        //Nopass login form
-        if ($nopassMode) {
-            include_once "forms/nopassloginForm.php";
-            exit();
-        }
-
-        //Regular login form
-        include_once "forms/loginForm.php";
-        exit();
-    }
     ?>
 </body>
 </html>

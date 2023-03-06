@@ -1,6 +1,7 @@
 <?php
-require_once "mysql.php";
-require_once "systemSettings.php";
+require_once __DIR__."/config/mysql.php";
+require_once __DIR__."/config/systemSettings.php";
+require_once __DIR__."/includes/forms.php";
 
 //Check if email is listed in the db
 $query = $mysqli->prepare("SELECT * FROM users WHERE email = ?");
@@ -30,7 +31,9 @@ if (isset($_GET['verify'])) {
         mail($_POST['email'], "Your code for {$domain}", $message, $headers);
 
         //Enter code form
-        include_once "forms/entercodeForm.php";
+        $entercodeForm->setAction("nopassLogin.php");
+        $entercodeForm->addHiddenInput("email", $_POST["email"]);
+        $entercodeForm->echoForm();
     }
 } else {
     $correctCode = $result->fetch_assoc()['password'];

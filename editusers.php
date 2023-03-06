@@ -8,9 +8,10 @@
 </head>
 <body>
     <?php
-    require_once "auth.php";
-    require_once "mysql.php";
-    include_once "userHeader.php";
+    require_once __DIR__."/includes/auth.php";
+    require_once __DIR__."/config/mysql.php";
+    include_once __DIR__."/includes/userHeader.php";
+    
     session_start();
     $loggedInUser = $currentUser->username;
 
@@ -57,7 +58,7 @@
 
     if (!isset($_GET['action'])) {
         //List usernames and controls
-        include_once "userlist.php";
+        include_once __DIR__."/includes/userlist.php";
         exit();
     }
 

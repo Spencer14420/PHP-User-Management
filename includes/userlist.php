@@ -1,7 +1,7 @@
 <?php
-require_once "auth.php";
-require_once "mysql.php";
-include_once "userHeader.php";
+require_once __DIR__."/auth.php";
+require_once __DIR__."/../config/mysql.php";
+include_once __DIR__."/userHeader.php";
 
 $query = $mysqli->prepare("SELECT username FROM users");
 $query->execute();

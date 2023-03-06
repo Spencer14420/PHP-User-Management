@@ -8,8 +8,8 @@
 </head>
 <body>
     <?php
-    include_once "userHeader.php";
-    require_once "pageCheck.php";
+    include_once __DIR__."/includes/userHeader.php";
+    require_once __DIR__."/includes/pageCheck.php";
 
     echo "You can see test.php";
     ?>
