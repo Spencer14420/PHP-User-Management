@@ -152,6 +152,7 @@ $nopasscreateaccountForm = new Form();
 $nopasscreateaccountForm->addInput("text", "username", "Username", true);
 $nopasscreateaccountForm->addInput("text", "email", "Email address", true);
 $nopasscreateaccountForm->setPerm($currentUser->hasPerm("createaccount"));
+$nopasscreateaccountForm->setPermError("Sorry, you cannot create an account");
 $nopasscreateaccountForm->addFormScript(
 <<<SCRIPT
     const valInput = () => document.querySelector("#form").submit();
