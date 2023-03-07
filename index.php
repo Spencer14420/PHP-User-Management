@@ -1,18 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Management</title>
 </head>
+
 <body>
     <?php
-    require_once __DIR__."/includes/auth.php";
-    require_once __DIR__."/config/mysql.php";
-    require_once __DIR__."/config/systemSettings.php";
-    include_once __DIR__."/includes/userHeader.php";
-    include_once __DIR__."/includes/forms.php";
+    require_once __DIR__ . "/includes/auth.php";
+    require_once __DIR__ . "/config/mysql.php";
+    require_once __DIR__ . "/config/systemSettings.php";
+    include_once __DIR__ . "/includes/userHeader.php";
+    include_once __DIR__ . "/includes/forms.php";
 
     //Createaccount form
     if (isset($_GET['action'])) {
@@ -39,4 +41,5 @@
 
     ?>
 </body>
+
 </html>

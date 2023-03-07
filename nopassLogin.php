@@ -62,5 +62,3 @@ if (isset($_GET['verify'])) {
     header("Location: index.php");
     exit();
 }
-
-?>

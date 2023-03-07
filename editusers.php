@@ -1,29 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Users</title>
 </head>
+
 <body>
     <?php
-    require_once __DIR__."/includes/auth.php";
-    require_once __DIR__."/config/mysql.php";
-    include_once __DIR__."/includes/userHeader.php";
-    
+    require_once __DIR__ . "/includes/auth.php";
+    require_once __DIR__ . "/config/mysql.php";
+    include_once __DIR__ . "/includes/userHeader.php";
+
     session_start();
     $loggedInUser = $currentUser->username;
 
     //Require "renameusers", "deleteusers" or "groupusers
-    if (!$currentUser->hasPerm("renameusers") OR !$currentUser->hasPerm("deleteusers") OR !$currentUser->hasPerm("groupusers")) {
+    if (!$currentUser->hasPerm("renameusers") or !$currentUser->hasPerm("deleteusers") or !$currentUser->hasPerm("groupusers")) {
         exit("You do not have permission to view this page");
     }
 
     //---Form scripts--->
 
     //Rename
-    if (isset($_POST['csrf']) AND isset($_POST['newname']) AND isset($_GET['action']) AND isset($_GET['user'])) {
+    if (isset($_POST['csrf']) and isset($_POST['newname']) and isset($_GET['action']) and isset($_GET['user'])) {
         //Validate token
         if ($_POST['csrf'] === $_SESSION["rename" . $_GET['user']]) {
             //Check if username is taken
@@ -47,7 +49,7 @@
     }
 
     //Groups
-    if (isset($_POST['csrf']) AND isset($_GET['action']) AND isset($_GET['user'])) {
+    if (isset($_POST['csrf']) and isset($_GET['action']) and isset($_GET['user'])) {
         //Validate token
         if ($_POST['csrf'] === $_SESSION["editgroups" . $_GET['user']]) {
             exit();
@@ -58,7 +60,7 @@
 
     if (!isset($_GET['action'])) {
         //List usernames and controls
-        include_once __DIR__."/includes/userlist.php";
+        include_once __DIR__ . "/includes/userlist.php";
         exit();
     }
 
@@ -78,10 +80,9 @@
         echo "<form action='editusers.php?action=rename&user={$_GET['user']}' method='POST'>";
         echo '<label for="newname">New username: </label>';
         echo '<input required type="text" id="newname" name="newname">';
-        echo '<input type="hidden" id="csrf" name="csrf" value="'.$_SESSION[$_GET['action'] . $_GET['user']].'"><br>';
+        echo '<input type="hidden" id="csrf" name="csrf" value="' . $_SESSION[$_GET['action'] . $_GET['user']] . '"><br>';
         echo '<input type="submit">';
         echo '</form>';
-        
     }
 
     //Delete
@@ -103,7 +104,7 @@
         echo "<form action='editusers.php?action=editgroups&user={$_GET['user']}' method='POST'>";
 
         //List group checkboxes
-        foreach($perms as $key => $perm) {
+        foreach ($perms as $key => $perm) {
             if ($key !== "all") {
                 echo "<input type='checkbox' id='{$key}' name='{$key}' value='true' ";
                 //Check the box if user is already in group
@@ -113,7 +114,7 @@
                 echo "><label for='{$key}'>{$key}</label><br>";
             }
         }
-        echo "<input type='hidden' id='csrf' name='csrf' value='{$_SESSION[$_GET['action'] . $_GET['user']]}'>";
+        echo "<input type='hidden' id='csrf' name='csrf' value='{$_SESSION[$_GET['action'] .$_GET['user']]}'>";
         echo "<input type='submit'>";
         echo "</form>";
     }
@@ -122,4 +123,5 @@
     ?>
 
 </body>
+
 </html>

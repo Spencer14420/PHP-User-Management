@@ -81,4 +81,3 @@ function auth($currentUser, $mysqli, $perms) {
 }
 
 auth($currentUser, $mysqli, $perms);
-?>

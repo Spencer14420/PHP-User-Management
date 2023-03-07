@@ -19,4 +19,3 @@ while ($row = $result->fetch_assoc()) {
     }
     echo "<br><br>";
 }
-?>

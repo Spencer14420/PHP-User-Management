@@ -4,4 +4,3 @@
     if (!$currentUser->hasPerm("view")) {
         exit("You do not have permission to view this page");
     }
-?>
