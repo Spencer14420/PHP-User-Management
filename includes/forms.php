@@ -91,7 +91,6 @@ class Form
 $loginForm = new Form();
 $loginForm->addInput("text", "username", "Username", true);
 $loginForm->addInput("password", "pass", "Password", true);
-$loginForm->setAction(__DIR__ . "/../login.php");
 $loginForm->addFormScript(
     <<<SCRIPT
     document.querySelector("#submitBtn").addEventListener("click", () => document.querySelector("#form").submit());
