@@ -1,7 +1,7 @@
 <?php
-require_once __DIR__."/config/mysql.php";
-require_once __DIR__."/config/systemSettings.php";
-require_once __DIR__."/includes/forms.php";
+require_once __DIR__ . "/config/mysql.php";
+require_once __DIR__ . "/config/systemSettings.php";
+require_once __DIR__ . "/includes/forms.php";
 
 //Check if email is listed in the db
 $query = $mysqli->prepare("SELECT * FROM users WHERE email = ?");
@@ -14,11 +14,11 @@ if (mysqli_num_rows($result) === 0) {
 
 //Verify email
 if (isset($_GET['verify'])) {
-    if ($_GET['verify'] = 1) {
+    if ($_GET['verify'] === 1) {
         //Generate random code
         $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         $code = substr(str_shuffle($chars), 0, 12);
-        
+
         //Add code to database
         $hashcode = password_hash($code, PASSWORD_DEFAULT);
         $query = $mysqli->prepare("UPDATE users SET password = ? WHERE email = ?");

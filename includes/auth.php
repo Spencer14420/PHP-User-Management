@@ -1,19 +1,21 @@
 <?php
-require_once __DIR__."/../config/mysql.php";
-require_once __DIR__."/../config/defaultPerms.php";
+require_once __DIR__ . "/../config/mysql.php";
+require_once __DIR__ . "/../config/defaultPerms.php";
 
 $currentUser = new User();
 $currentUser->setUsername(false);
 $currentUser->setPerms($perms, ["all"]);
 
 
-class User {
+class User
+{
     public $userid;
     public $username;
     public $userPerms;
     public $groups;
 
-    public function setUserid($username, $mysqli) {
+    public function setUserid($username, $mysqli)
+    {
         $query = $mysqli->prepare("SELECT id FROM users WHERE username = ?");
         $query->bind_param("s", $username);
         $query->execute();
@@ -22,7 +24,8 @@ class User {
     }
 
     //Return array of permissions the user has
-    public function setPerms($permslist, $groups) {
+    public function setPerms($permslist, $groups)
+    {
         foreach ($groups as $group) {
             foreach ($permslist[$group] as $perm) {
                 $this->userPerms[] =  $perm;
@@ -30,11 +33,13 @@ class User {
         }
     }
 
-    public function setUsername($username) {
+    public function setUsername($username)
+    {
         $this->username = $username;
     }
 
-    public function setGroups($mysqli) {
+    public function setGroups($mysqli)
+    {
         $query = $mysqli->prepare("SELECT groupname FROM groups WHERE userid = ?");
         $query->bind_param("i", $this->userid);
         $query->execute();
@@ -46,16 +51,19 @@ class User {
         $this->groups = $groups;
     }
 
-    public function hasPerm($perm) {
+    public function hasPerm($perm)
+    {
         return in_array($perm, $this->userPerms);
     }
 
-    public function inGroup($group) {
+    public function inGroup($group)
+    {
         return in_array($group, $this->groups);
     }
 }
 
-function auth($currentUser, $mysqli, $perms) {
+function auth($currentUser, $mysqli, $perms)
+{
     //Check if token cookie is set
     if (!isset($_COOKIE['sp-token'])) {
         return;
