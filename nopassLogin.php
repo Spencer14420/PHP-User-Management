@@ -14,7 +14,7 @@ if (mysqli_num_rows($result) === 0) {
 
 //Verify email
 if (isset($_GET['verify'])) {
-    if ($_GET['verify'] === 1) {
+    if ($_GET['verify'] == 1) {
         //Generate random code
         $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         $code = substr(str_shuffle($chars), 0, 12);
