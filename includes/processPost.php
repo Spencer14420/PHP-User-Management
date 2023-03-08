@@ -1,5 +1,5 @@
 <?php
-//This is included in index.php whenever the user makes a GET request
+//This is included in index.php whenever the user makes a POST request
 require_once __DIR__ . "/standardReq.php";
 
 if (isset($_GET['action'])) {
