@@ -10,9 +10,7 @@
 
 <body>
     <?php
-    require_once __DIR__ . "/includes/auth.php";
-    require_once __DIR__ . "/config/mysql.php";
-    include_once __DIR__ . "/includes/userHeader.php";
+    require_once __DIR__ . "/includes/standardReq.php";
 
     session_start();
     $loggedInUser = $currentUser->username;
@@ -92,7 +90,7 @@
 
     //Groups
     if ($_GET['action'] === "editgroups") {
-        require_once "defaultPerms.php";
+        require_once __DIR__ . "/config/defaultPerms.php";
 
         //Create user object for user being edited
         $selectedUser = new User();
