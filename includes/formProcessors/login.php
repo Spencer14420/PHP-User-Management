@@ -1,6 +1,5 @@
 <?php
-require_once "mysql.php";
-require_once "systemSettings.php";
+require_once __DIR__ . "/../standardReq.php";
 
 //Check if username exists
 $query = $mysqli->prepare("SELECT password FROM users WHERE username = ?");

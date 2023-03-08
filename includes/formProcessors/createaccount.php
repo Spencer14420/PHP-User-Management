@@ -1,7 +1,5 @@
 <?php
-require_once __DIR__ . "/config/mysql.php";
-require_once __DIR__ . "/includes/auth.php";
-require_once __DIR__ . "/config/systemSettings.php";
+require_once __DIR__ . "/../standardReq.php";
 
 if (!$nopassMode) {
     $hashpass = password_hash($_POST['pass'], PASSWORD_DEFAULT);
