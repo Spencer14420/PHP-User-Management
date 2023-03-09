@@ -25,5 +25,8 @@ if (isset($_GET['action'])) {
             $loginForm->setAction("index.php?action=login");
             $loginForm->echoForm();
         }
+        //User list
+    } elseif ($_GET['action'] === "userlist") {
+        include_once __DIR__ . "/userlist.php";
     }
 }

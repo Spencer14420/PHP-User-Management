@@ -15,42 +15,42 @@
     session_start();
     $loggedInUser = $currentUser->username;
 
-    //Require "renameusers", "deleteusers" or "groupusers
-    if (!$currentUser->hasPerm("renameusers") or !$currentUser->hasPerm("deleteusers") or !$currentUser->hasPerm("groupusers")) {
-        exit("You do not have permission to view this page");
-    }
-
     //---Form scripts--->
 
     //Rename
-    if (isset($_POST['csrf']) and isset($_POST['newname']) and isset($_GET['action']) and isset($_GET['user'])) {
+    if (isset($_POST['csrf']) and isset($_GET['action']) and $_GET['action'] == "rename") {
         //Validate token
         if ($_POST['csrf'] === $_SESSION["rename" . $_GET['user']]) {
-            //Check if username is taken
-            $query = $mysqli->prepare("SELECT * FROM users WHERE username = ?");
-            $query->bind_param("s", $_POST['newname']);
-            $query->execute();
-            $result = $query->get_result();
-            if (mysqli_num_rows($result) > 0) {
-                exit("<b>Error</b>: An account with the username \"<b>{$_POST['newname']}</b>\" already exists");
-            }
+            //Create user object for user being edited
+            $selectedUser = new User();
+            $selectedUser->setUsername($_GET['user']);
 
             //Rename user
-            if ($currentUser->hasPerm("renameusers")) {
-                $query = $mysqli->prepare("UPDATE users SET username = ? WHERE username = ?");
-                $query->bind_param("ss", $_POST['newname'], $_GET['user']);
-                $query->execute();
-                echo "<b>Success</b><br><br><b>{$_GET['user']}</b> has been renamed to <b>{$_POST['newname']}</b>";
-                exit();
-            }
+            $selectedUser->renameUser($_POST['newname']);
         }
     }
 
     //Groups
-    if (isset($_POST['csrf']) and isset($_GET['action']) and isset($_GET['user'])) {
+    if (isset($_POST['csrf']) and isset($_GET['action']) and $_GET['action'] == "editgroups") {
         //Validate token
         if ($_POST['csrf'] === $_SESSION["editgroups" . $_GET['user']]) {
-            exit();
+            require_once __DIR__ . "/config/defaultPerms.php";
+
+            //Create user object for user being edited
+            $selectedUser = new User();
+            $selectedUser->setUsername($_GET['user']);
+            $selectedUser->setUserid($selectedUser->username);
+
+            //Create array of selected groups
+            $selectedGroups = [];
+            foreach ($perms as $key => $perm) {
+                if ($key !== "all" and $_POST[$key] == true) {
+                    $selectedGroups[] = $key;
+                }
+            }
+
+            //Change groups
+            $selectedUser->changeGroups($selectedGroups);
         }
     }
 
@@ -94,8 +94,8 @@
 
         //Create user object for user being edited
         $selectedUser = new User();
-        $selectedUser->setUserid($_GET['user'], $mysqli);
-        $selectedUser->setGroups($mysqli);
+        $selectedUser->setUserid($_GET['user']);
+        $selectedUser->setGroups();
 
 
         echo "Add or remove <b>{$_GET['user']}</b> from groups<br><br>";

@@ -4,7 +4,7 @@ require_once __DIR__ . "/auth.php";
 if ($currentUser->username !== false) {
     echo "Logged in as {$currentUser->username}";
     if ($currentUser->hasPerm("renameusers") or $currentUser->hasPerm("deleteusers") or $currentUser->hasPerm("groupusers")) {
-        echo " | <a href='editusers.php'>Edit Users</a>";
+        echo " | <a href='index.php?action=userlist'>Edit Users</a>";
     }
     echo " | <a href='logout.php'>Log out</a><br><br>";
 } else {
