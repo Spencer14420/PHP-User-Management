@@ -10,7 +10,6 @@ class Form
     private $hasPermission = true;
     private $permError = "";
     private $hiddenInputs = [];
-    private $formScript;
 
     public function addInput($type, $name, $question, $required)
     {
@@ -43,11 +42,6 @@ class Form
         $this->hiddenInputs[] = [$name, $value];
     }
 
-    public function addFormScript($script)
-    {
-        $this->formScript = $script;
-    }
-
     public function echoForm()
     {
         if ($this->hasPermission) {
@@ -72,10 +66,14 @@ class Form
             }
 
             $str = <<<END
+                <input type='submit'>
                 </form>
-                <button id='submitBtn'>Submit</button>
                 <script>
-                $this->formScript
+                    document.addEventListener("keydown", function(event) {
+                        if (event.keyCode === 13) {
+                            document.querySelector("#form").submit();
+                        }
+                    });
                 </script>
             END;
             echo $str;
@@ -91,44 +89,14 @@ class Form
 $loginForm = new Form();
 $loginForm->addInput("text", "username", "Username", true);
 $loginForm->addInput("password", "pass", "Password", true);
-$loginForm->addFormScript(
-    <<<SCRIPT
-    document.querySelector("#submitBtn").addEventListener("click", () => document.querySelector("#form").submit());
-    document.addEventListener("keydown", function(event) {
-        if (event.keyCode === 13) {
-            document.querySelector("#form").submit();
-        }
-    });
-SCRIPT
-);
 
 //nopass-mode login form
 $nopassloginForm = new Form();
 $nopassloginForm->addInput("text", "email", "Email address", true);
-$nopassloginForm->addFormScript(
-    <<<SCRIPT
-    document.querySelector("#submitBtn").addEventListener("click", () => document.querySelector("#form").submit());
-    document.addEventListener("keydown", function(event) {
-        if (event.keyCode === 13) {
-            document.querySelector("#form").submit();
-        }
-    });
-SCRIPT
-);
 
 //Enter code form
 $entercodeForm = new Form();
 $entercodeForm->addInput("text", "code", "Code", true);
-$entercodeForm->addFormScript(
-    <<<SCRIPT
-    document.querySelector("#submitBtn").addEventListener("click", () => document.querySelector("#form").submit());
-    document.addEventListener("keydown", function(event) {
-        if (event.keyCode === 13) {
-            document.querySelector("#form").submit();
-        }
-    });
-SCRIPT
-);
 
 //Create account form
 $createaccountForm = new Form();
@@ -138,23 +106,6 @@ $createaccountForm->addInput("password", "pass", "Password", true);
 $createaccountForm->addInput("password", "pass2", "Confirm password", true);
 $createaccountForm->setPerm($currentUser->hasPerm("createaccount"));
 $createaccountForm->setPermError("Sorry, you cannot create an account");
-$createaccountForm->addFormScript(
-    <<<SCRIPT
-    const valInput = () => {
-        if (document.querySelector("#pass").value === document.querySelector("#pass2").value) {
-            document.querySelector("#form").submit();
-        } else {
-            alert("Passwords do not match");
-        }
-    };
-    document.querySelector("#submitBtn").addEventListener("click", valInput);
-    document.addEventListener("keydown", function(event) {
-        if (event.keyCode === 13) {
-            valInput();
-        }
-    });
-SCRIPT
-);
 
 //Nopass-mode create account form
 $nopasscreateaccountForm = new Form();
@@ -162,14 +113,3 @@ $nopasscreateaccountForm->addInput("text", "username", "Username", true);
 $nopasscreateaccountForm->addInput("text", "email", "Email address", true);
 $nopasscreateaccountForm->setPerm($currentUser->hasPerm("createaccount"));
 $nopasscreateaccountForm->setPermError("Sorry, you cannot create an account");
-$nopasscreateaccountForm->addFormScript(
-    <<<SCRIPT
-    const valInput = () => document.querySelector("#form").submit();
-    document.querySelector("#submitBtn").addEventListener("click", valInput);
-    document.addEventListener("keydown", function(event) {
-        if (event.keyCode === 13) {
-            valInput();
-        }
-    });
-SCRIPT
-);
