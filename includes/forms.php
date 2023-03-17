@@ -103,7 +103,6 @@ $createaccountForm = new Form();
 $createaccountForm->addInput("text", "username", "Username", true);
 $createaccountForm->addInput("text", "email", "Email address", true);
 $createaccountForm->addInput("password", "pass", "Password", true);
-$createaccountForm->addInput("password", "pass2", "Confirm password", true);
 $createaccountForm->setPerm($currentUser->hasPerm("createaccount"));
 $createaccountForm->setPermError("Sorry, you cannot create an account");
 
