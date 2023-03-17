@@ -2,7 +2,15 @@
 require_once __DIR__ . "/../standardReq.php";
 
 if (!$nopassMode) {
+    //Hash entered password (only present if nopassMode is disabled)
     $hashpass = password_hash($_POST['pass'], PASSWORD_DEFAULT);
+} else {
+    //Validate email (only present if nopassMode is enabled)
+    if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+        echo "Please enter a valid email address<br><br>",
+        "<a href='index.php?action=createaccount'>Try again</a>";
+        exit();
+    }
 }
 
 //Check if user has "createaccount" perm
