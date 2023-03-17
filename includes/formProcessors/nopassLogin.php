@@ -15,8 +15,8 @@ if (mysqli_num_rows($result) === 0) {
 if (isset($_GET['verify'])) {
     if ($_GET['verify'] == 1) {
         //Generate random code
-        $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        $code = substr(str_shuffle($chars), 0, 12);
+        $chars = "0123456789";
+        $code = substr(str_shuffle($chars), 0, 5);
 
         //Add code to database
         $hashcode = password_hash($code, PASSWORD_DEFAULT);
@@ -39,7 +39,14 @@ if (isset($_GET['verify'])) {
 
     //Check if password/username are incorrect
     if (!password_verify($_POST['code'], $correctCode)) {
-        exit("That code is incorrect!");
+        //If the code is wrong, reset the code and prompt the user to try signing in again
+        $query = $mysqli->prepare("UPDATE users SET password = '0' WHERE email = ?");
+        $query->bind_param("s", $_POST['email']);
+        $query->execute();
+
+        echo "The code you entered is incorrect<br><br>",
+        "<a href='index.php?action=login'>Try again</a>";
+        exit();
     }
 
     //Generate token and store it as a cookie
