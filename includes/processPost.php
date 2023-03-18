@@ -15,5 +15,8 @@ if (isset($_GET['action'])) {
             //Regular login form
             require_once __DIR__ . "/formProcessors/login.php";
         }
+        //Request account form
+    } elseif ($_GET['action'] === "requestaccount") {
+        require_once __DIR__ . "/formProcessors/requestaccount.php";
     }
 }

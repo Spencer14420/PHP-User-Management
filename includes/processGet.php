@@ -28,5 +28,9 @@ if (isset($_GET['action'])) {
         //User list
     } elseif ($_GET['action'] === "userlist") {
         include_once __DIR__ . "/userlist.php";
+        //Request account form
+    } elseif ($_GET['action'] === "requestaccount") {
+        $requestAccountForm->setAction("index.php?action=requestaccount");
+        $requestAccountForm->echoForm();
     }
 }

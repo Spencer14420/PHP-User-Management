@@ -15,6 +15,8 @@ if ($currentUser->username !== false) {
     echo "<a href='index.php?action=login'>Log in</a>";
     if ($currentUser->hasPerm("createaccount")) {
         echo " | <a href='index.php?action=createaccount'>Create account</a>";
+    } elseif ($currentUser->hasPerm("requestaccount")) {
+        echo " | <a href='index.php?action=requestaccount'>Request account</a>";
     }
     echo "<br><br>";
 }

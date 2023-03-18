@@ -112,3 +112,10 @@ $nopasscreateaccountForm->addInput("text", "username", "Username", true);
 $nopasscreateaccountForm->addInput("text", "email", "Email address", true);
 $nopasscreateaccountForm->setPerm($currentUser->hasPerm("createaccount"));
 $nopasscreateaccountForm->setPermError("Sorry, you cannot create an account");
+
+//Request account form
+$requestAccountForm = new Form();
+$requestAccountForm->addInput("text", "email", "Email address", true);
+$requestAccountForm->addInput("text", "name", "Your name", true);
+$requestAccountForm->setPerm($currentUser->hasPerm("requestaccount"));
+$requestAccountForm->setPermError("Sorry, you cannot request an account");
