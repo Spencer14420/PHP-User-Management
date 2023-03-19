@@ -9,7 +9,7 @@ $result = $query->get_result();
 while ($row = $result->fetch_assoc()) {
     echo "<b>" . $row['username'] . "</b>";
     if ($currentUser->hasPerm("renameusers")) {
-        echo " <a href=editusers.php?action=rename&user={$row['username']}>(Rename)</a>";
+        echo " <a href=index.php?action=rename&user={$row['username']}>(Rename)</a>";
     }
     if ($currentUser->hasPerm("deleteusers")) {
         echo " <a href=editusers.php?action=delete&user={$row['username']}>(Delete)</a>";

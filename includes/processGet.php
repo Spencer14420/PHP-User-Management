@@ -32,5 +32,15 @@ if (isset($_GET['action'])) {
     } elseif ($_GET['action'] === "requestaccount") {
         $requestAccountForm->setAction("index.php?action=requestaccount");
         $requestAccountForm->echoForm();
+        //Renameuser form
+    } elseif (isset($_GET['user']) and $_GET['action'] === "rename") {
+        echo "Rename <b>{$_GET['user']}</b><br><br>";
+        $renameUserForm->setAction("index.php?action=rename&user={$_GET['user']}");
+        //addCSRF parameter is the name of the session variable
+        //Below sets a unique $_SESSION variable name based on GET variables,
+        //so multiple actions can be performed at the same time
+        //without overwriting each others' tokens
+        $renameUserForm->addCSRF($_GET['action'] . $_GET['user']);
+        $renameUserForm->echoForm();
     }
 }

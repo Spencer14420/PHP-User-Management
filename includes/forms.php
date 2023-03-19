@@ -42,6 +42,14 @@ class Form
         $this->hiddenInputs[] = [$name, $value];
     }
 
+    public function addCSRF($sessName)
+    {
+        session_start();
+        $csrf = hash("sha256", random_bytes(256));
+        $_SESSION[$sessName] = $csrf;
+        $this->addHiddenInput("csrf", $csrf);
+    }
+
     public function echoForm()
     {
         if ($this->hasPermission) {
@@ -119,3 +127,9 @@ $requestAccountForm->addInput("text", "email", "Email address", true);
 $requestAccountForm->addInput("text", "name", "Your name", true);
 $requestAccountForm->setPerm($currentUser->hasPerm("requestaccount"));
 $requestAccountForm->setPermError("Sorry, you cannot request an account");
+
+//Rename user form
+$renameUserForm = new Form();
+$renameUserForm->addInput("text", "newname", "New username", true);
+$renameUserForm->setPerm($currentUser->hasPerm("renameusers"));
+$renameUserForm->setPermError("Sorry, you cannot rename users");

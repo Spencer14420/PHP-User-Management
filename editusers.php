@@ -9,6 +9,7 @@
 </head>
 
 <body>
+
     <?php
     require_once __DIR__ . "/includes/standardReq.php";
 
@@ -16,19 +17,6 @@
     $loggedInUser = $currentUser->username;
 
     //---Form scripts--->
-
-    //Rename
-    if (isset($_POST['csrf']) and isset($_GET['action']) and $_GET['action'] == "rename") {
-        //Validate token
-        if ($_POST['csrf'] === $_SESSION["rename" . $_GET['user']]) {
-            //Create user object for user being edited
-            $selectedUser = new User();
-            $selectedUser->setUsername($_GET['user']);
-
-            //Rename user
-            $selectedUser->renameUser($_POST['newname']);
-        }
-    }
 
     //Groups
     if (isset($_POST['csrf']) and isset($_GET['action']) and $_GET['action'] == "editgroups") {
@@ -56,12 +44,6 @@
 
     //<--- ---
 
-    if (!isset($_GET['action'])) {
-        //List usernames and controls
-        include_once __DIR__ . "/includes/userlist.php";
-        exit();
-    }
-
     //Generate CSRF token and store it in session
     $csrf = hash("sha256", random_bytes(256));
 
@@ -71,17 +53,6 @@
     $_SESSION[$_GET['action'] . $_GET['user']] = $csrf;
 
     //---Edit interfaces-->
-
-    //Rename
-    if ($_GET['action'] === "rename") {
-        echo "Rename <b>{$_GET['user']}</b><br><br>";
-        echo "<form action='editusers.php?action=rename&user={$_GET['user']}' method='POST'>";
-        echo '<label for="newname">New username: </label>';
-        echo '<input required type="text" id="newname" name="newname">';
-        echo '<input type="hidden" id="csrf" name="csrf" value="' . $_SESSION[$_GET['action'] . $_GET['user']] . '"><br>';
-        echo '<input type="submit">';
-        echo '</form>';
-    }
 
     //Delete
     if ($_GET['action'] === "delete") {
