@@ -3,6 +3,9 @@ require_once __DIR__ . "/auth.php";
 require_once __DIR__ . "/../config/mysql.php";
 include_once __DIR__ . "/userHeader.php";
 
+//Check for "view" permission
+require_once __DIR__ . "/pageCheck.php";
+
 $query = $mysqli->prepare("SELECT username FROM users");
 $query->execute();
 $result = $query->get_result();
