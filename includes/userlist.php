@@ -15,7 +15,7 @@ while ($row = $result->fetch_assoc()) {
         echo " <a href=index.php?action=rename&user={$row['username']}>(Rename)</a>";
     }
     if ($currentUser->hasPerm("deleteusers")) {
-        echo " <a href=editusers.php?action=delete&user={$row['username']}>(Delete)</a>";
+        echo " <a href=#>(Delete)</a>";
     }
     if ($currentUser->hasPerm("groupusers")) {
         echo " <a href=index.php?action=editgroups&user={$row['username']}>(Edit groups)</a>";
