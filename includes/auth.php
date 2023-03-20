@@ -2,55 +2,56 @@
 require_once __DIR__ . "/../config/mysql.php";
 require_once __DIR__ . "/../config/defaultPerms.php";
 
-$currentUser = new User();
-$currentUser->setUsername(false);
-$currentUser->setPerms($perms, ["all"]);
-
+$currentUser = new User(false); //Default User object for when the user is logged out
 
 class User
 {
-    public $userid;
     public $username;
-    public $userPerms;
-    public $groups;
+    protected $userid;
+    private $groups;
+    private $userPerms;
 
-    public function setUserid($username)
+    function __construct($username)
+    {
+        $this->username = $username;
+        $this->setUserid();
+        $this->setGroups();
+        $this->setPerms();
+    }
+
+    private function setUserid()
     {
         global $mysqli;
         $query = $mysqli->prepare("SELECT id FROM users WHERE username = ?");
-        $query->bind_param("s", $username);
+        $query->bind_param("s", $this->username);
         $query->execute();
         $result = $query->get_result();
         $this->userid = $result->fetch_assoc()['id'];
     }
 
-    //Set array of permissions the user has
-    public function setPerms($permslist, $groups)
-    {
-        foreach ($groups as $group) {
-            foreach ($permslist[$group] as $perm) {
-                $this->userPerms[] =  $perm;
-            }
-        }
-    }
-
-    public function setUsername($username)
-    {
-        $this->username = $username;
-    }
-
-    public function setGroups()
+    private function setGroups()
     {
         global $mysqli;
         $query = $mysqli->prepare("SELECT groupname FROM groups WHERE userid = ?");
         $query->bind_param("i", $this->userid);
         $query->execute();
         $result = $query->get_result();
-        $groups = [];
+        $groups = ["all"];
         while ($row = $result->fetch_assoc()) {
             $groups[] = $row['groupname'];
         }
         $this->groups = $groups;
+    }
+
+    //Set array of permissions the user has
+    private function setPerms()
+    {
+        global $perms; //Defined in defaultPerms.php
+        foreach ($this->groups as $group) {
+            foreach ($perms[$group] as $perm) {
+                $this->userPerms[] =  $perm;
+            }
+        }
     }
 
     public function hasPerm($perm)
@@ -62,7 +63,12 @@ class User
     {
         return in_array($group, $this->groups);
     }
+}
 
+//Adds methods to change data associated
+//with the user in the database
+class EditableUser extends User
+{
     public function renameUser($newUsername)
     {
         global $mysqli;
@@ -84,7 +90,7 @@ class User
             $query->bind_param("ss", $newUsername, $this->username);
             $query->execute();
             echo "<b>Success</b><br><br><b>$this->username</b> has been renamed to <b>$newUsername</b>";
-            $this->setUsername($newUsername);
+            $this->username = $newUsername;
             exit();
         } else {
             exit("Sorry, you cannot rename users");
@@ -116,9 +122,12 @@ class User
     }
 }
 
-function auth($currentUser, $perms)
+//Checks if the user is logged in
+//and then overwrites the default User object
+function auth()
 {
     global $mysqli;
+    global $currentUser;
 
     //Check if token cookie is set
     if (!isset($_COOKIE['sp-token'])) {
@@ -136,12 +145,7 @@ function auth($currentUser, $perms)
     }
 
     $username = $result->fetch_assoc()['username'];
-    $currentUser->setUsername($username);
-    $currentUser->setUserid($username);
-
-    //Get explicitly set groups
-    $currentUser->setGroups();
-    $currentUser->setPerms($perms, $currentUser->groups);
+    $currentUser = new User($username);
 }
 
-auth($currentUser, $perms);
+auth();

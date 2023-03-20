@@ -99,18 +99,16 @@ class TokenForm extends Form
     }
 }
 
-//Allows the user to set a username associated with the form
-//The username is then converted into a User object
+//Adds an $associatedUser property, consisting of a User object
+//This is useful for when the form content needs to be
+//based on data associated with the user
 class UserObjForm extends TokenForm
 {
     public User $associatedUser;
 
     function __construct($username)
     {
-        $this->associatedUser = new User;
-        $this->associatedUser->setUsername($username);
-        $this->associatedUser->setUserid($username);
-        $this->associatedUser->setGroups();
+        $this->associatedUser = new User($username);
     }
 }
 
