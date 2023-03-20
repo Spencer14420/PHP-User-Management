@@ -33,5 +33,9 @@ if (isset($_GET['action'])) {
         if (validateCSRF("rename" . $_GET['user'], $_POST['csrf'])) {
             require_once __DIR__ . "/formProcessors/renameUser.php";
         }
+    } elseif (isset($_GET['user']) and $_GET['action'] === "editgroups") {
+        if (validateCSRF("editgroups" . $_GET['user'], $_POST['csrf'])) {
+            require_once __DIR__ . "/formProcessors/editGroups.php";
+        }
     }
 }

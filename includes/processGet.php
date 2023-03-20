@@ -42,5 +42,9 @@ if (isset($_GET['action'])) {
         //without overwriting each others' tokens
         $renameUserForm->addCSRF($_GET['action'] . $_GET['user']);
         $renameUserForm->echoForm();
+    } elseif (isset($_GET['user']) and $_GET['action'] === "editgroups") {
+        echo "Add or remove <b>{$_GET['user']}</b> from groups<br><br>";
+        //Defined in forms.php
+        renderEditGroupsForm($_GET['user']);
     }
 }
