@@ -163,6 +163,7 @@ function renderEditGroupsForm($username)
     if (isset($_GET['action']) and isset($_GET['user'])) {
         $editGroupsForm = new UserObjForm($username);
         global $perms; //Defined in defaultPerms.php
+        global $currentUser;
 
         //Adds a checkbox for each group defined in the $perms array, other than "all"
         foreach ($perms as $group => $perm) {
@@ -181,6 +182,8 @@ function renderEditGroupsForm($username)
         //so multiple actions can be performed at the same time
         //without overwriting each others' tokens
         $editGroupsForm->addCSRF($_GET['action'] . $_GET['user']);
+        $editGroupsForm->setPerm($currentUser->hasPerm("groupusers"));
+        $editGroupsForm->setPermError("Sorry, you cannot add or remove users from groups");
         $editGroupsForm->echoForm();
     }
 }
