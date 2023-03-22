@@ -26,7 +26,7 @@ class EditableUser extends User
             $query = $mysqli->prepare("UPDATE users SET username = ? WHERE username = ?");
             $query->bind_param("ss", $newUsername, $this->username);
             $query->execute();
-            echo "<b>Success</b><br><br><b>$this->username</b> has been renamed to <b>$newUsername</b>";
+            echo "<b>Success</b><br><br><b>$this->formattedUsername</b> has been renamed to <b>$newUsername</b>";
             $this->username = $newUsername;
             exit();
         } else {
@@ -52,9 +52,40 @@ class EditableUser extends User
                 $query->execute();
             }
 
-            exit("<b>Success</b><br><br>Group membership of <b>$this->username</b> has been changed");
+            exit("<b>Success</b><br><br>Group membership of <b>$this->formattedUsername</b> has been changed");
         } else {
             exit("Sorry, you cannot add or remove users from groups");
+        }
+    }
+
+    //Used by deleteUser() and undeleteUser()
+    private function deleteUndeleteQuery($value)
+    {
+        global $mysqli;
+        $query = $mysqli->prepare("UPDATE users SET deleted = ? WHERE id = $this->userid");
+        $query->bind_param("i", $value);
+        $query->execute();
+    }
+
+    public function deleteUser()
+    {
+        global $currentUser;
+        if ($currentUser->hasPerm("deleteusers")) {
+            $this->deleteUndeleteQuery(1); //Updates the "deleted" value in the database to 1 (i.e. true)
+            exit("<b>Success</b><br><br><b>$this->formattedUsername</b> has been deleted");
+        } else {
+            exit("Sorry, you cannot delete users");
+        }
+    }
+
+    public function undeleteUser()
+    {
+        global $currentUser;
+        if ($currentUser->hasPerm("undeleteusers")) {
+            $this->deleteUndeleteQuery(0); //Updates the "deleted" value in the database to 0 (i.e. false)
+            exit("<b>Success</b><br><br><b>$this->formattedUsername</b> has been restored");
+        } else {
+            exit("Sorry, you cannot undelete users");
         }
     }
 }

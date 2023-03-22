@@ -77,3 +77,15 @@ function renderEditGroupsForm($username)
         $editGroupsForm->echoForm();
     }
 }
+
+//Delete user form
+$deleteUserForm = new TokenForm();
+$deleteUserForm->addInput("checkbox", "confirmed", "Check this box to confirm", false);
+$deleteUserForm->setPerm($currentUser->hasPerm("deleteusers"));
+$deleteUserForm->setPermError("Sorry, you cannot delete users");
+
+//Undelete user form
+$undeleteUserForm = new TokenForm();
+$undeleteUserForm->addInput("checkbox", "confirmed", "Check this box to confirm", false);
+$undeleteUserForm->setPerm($currentUser->hasPerm("undeleteusers"));
+$undeleteUserForm->setPermError("Sorry, you cannot undelete users");

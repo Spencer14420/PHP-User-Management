@@ -1,5 +1,5 @@
 <?php
 $perms = array(
     "all" => ["view", "createaccount"],
-    "admin" => ["renameusers", "deleteusers", "groupusers"]
+    "admin" => ["renameusers", "deleteusers", "undeleteusers", "groupusers"]
 );

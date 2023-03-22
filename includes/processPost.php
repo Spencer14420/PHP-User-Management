@@ -37,5 +37,13 @@ if (isset($_GET['action'])) {
         if (validateCSRF("editgroups" . $_GET['user'], $_POST['csrf'])) {
             require_once __DIR__ . "/formProcessors/editGroups.php";
         }
+    } elseif (isset($_GET['user']) and $_GET['action'] === "delete") {
+        if (validateCSRF("delete" . $_GET['user'], $_POST['csrf'])) {
+            require_once __DIR__ . "/formProcessors/deleteUser.php";
+        }
+    } elseif (isset($_GET['user']) and $_GET['action'] === "undelete") {
+        if (validateCSRF("undelete" . $_GET['user'], $_POST['csrf'])) {
+            require_once __DIR__ . "/formProcessors/undeleteUser.php";
+        }
     }
 }

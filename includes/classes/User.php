@@ -5,6 +5,9 @@ require_once __DIR__ . "/../../config/defaultPerms.php";
 class User
 {
     public $username;
+    public $exists;
+    public $deleted;
+    public $formattedUsername;
     protected $userid;
     private $groups;
     private $userPerms;
@@ -12,19 +15,52 @@ class User
     function __construct($username)
     {
         $this->username = $username;
-        $this->setUserid();
+        $this->setUseridAndExists();
+        $this->checkIfDeleted();
+        $this->setFormattedUsername();
         $this->setGroups();
         $this->setPerms();
     }
 
-    private function setUserid()
+    //Displays the username with a strikethough if it is deleted
+    private function setFormattedUsername()
+    {
+        if ($this->deleted) {
+            $this->formattedUsername = "<s>$this->username</s>";
+        } else {
+            $this->formattedUsername = $this->username;
+        }
+    }
+
+    private function setUseridAndExists()
     {
         global $mysqli;
         $query = $mysqli->prepare("SELECT id FROM users WHERE username = ?");
         $query->bind_param("s", $this->username);
         $query->execute();
         $result = $query->get_result();
-        $this->userid = $result->fetch_assoc()['id'];
+        if (mysqli_num_rows($result) === 0) {
+            $this->userid = -1;
+            $this->exists = false;
+        } else {
+            $this->userid = $result->fetch_assoc()['id'];
+            $this->exists = true;
+        }
+    }
+
+    private function checkIfDeleted()
+    {
+        global $mysqli;
+        $query = $mysqli->prepare("SELECT deleted FROM users WHERE username = ?");
+        $query->bind_param("s", $this->username);
+        $query->execute();
+        $result = $query->get_result();
+
+        if ($result->fetch_assoc()['deleted'] == 0) {
+            $this->deleted = false;
+        } else {
+            $this->deleted = true;
+        }
     }
 
     private function setGroups()

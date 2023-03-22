@@ -42,9 +42,21 @@ if (isset($_GET['action'])) {
         //without overwriting each others' tokens
         $renameUserForm->addCSRF($_GET['action'] . $_GET['user']);
         $renameUserForm->echoForm();
+        //Edit groups form
     } elseif (isset($_GET['user']) and $_GET['action'] === "editgroups") {
         echo "Add or remove <b>{$_GET['user']}</b> from groups<br><br>";
         //Defined in forms.php
         renderEditGroupsForm($_GET['user']);
+        //Delete user form
+    } elseif (isset($_GET['user']) and $_GET['action'] === "delete") {
+        echo "Delete <b>{$_GET['user']}</b><br><br>";
+        $deleteUserForm->setAction("index.php?action=delete&user={$_GET['user']}");
+        $deleteUserForm->addCSRF($_GET['action'] . $_GET['user']);
+        $deleteUserForm->echoForm();
+    } elseif (isset($_GET['user']) and $_GET['action'] === "undelete") {
+        echo "Undelete <b>{$_GET['user']}</b><br><br>";
+        $undeleteUserForm->setAction("index.php?action=undelete&user={$_GET['user']}");
+        $undeleteUserForm->addCSRF($_GET['action'] . $_GET['user']);
+        $undeleteUserForm->echoForm();
     }
 }
