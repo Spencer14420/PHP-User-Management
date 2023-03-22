@@ -15,6 +15,12 @@ while ($row = $result->fetch_assoc()) {
     $user = new User($row['username']);
     $deleteAction = ($user->deleted) ? "undelete" : "delete";
 
+    //Hide the user if it is deleted,
+    //and the viewer does not have the undeleteusers perm
+    if ($user->deleted and !$currentUser->hasPerm("undeleteusers")) {
+        continue;
+    }
+
     echo "<b>{$user->formattedUsername}</b>";
     if ($currentUser->hasPerm("renameusers")) {
         echo " <a href=index.php?action=rename&user=$user->username>(Rename)</a>";
