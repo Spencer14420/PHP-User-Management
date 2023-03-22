@@ -23,7 +23,7 @@ class User
     }
 
     //Displays the username with a strikethough if it is deleted
-    private function setFormattedUsername()
+    protected function setFormattedUsername()
     {
         if ($this->deleted) {
             $this->formattedUsername = "<s>$this->username</s>";

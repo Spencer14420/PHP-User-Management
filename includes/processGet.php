@@ -34,29 +34,50 @@ if (isset($_GET['action'])) {
         $requestAccountForm->echoForm();
         //Renameuser form
     } elseif (isset($_GET['user']) and $_GET['action'] === "rename") {
-        echo "Rename <b>{$_GET['user']}</b><br><br>";
-        $renameUserForm->setAction("index.php?action=rename&user={$_GET['user']}");
-        //addCSRF parameter is the name of the session variable
-        //Below sets a unique $_SESSION variable name based on GET variables,
-        //so multiple actions can be performed at the same time
-        //without overwriting each others' tokens
-        $renameUserForm->addCSRF($_GET['action'] . $_GET['user']);
-        $renameUserForm->echoForm();
+        $user = new User($_GET['user']);
+        if ($user->exists) {
+            echo "Rename <b>$user->formattedUsername</b><br><br>";
+            $renameUserForm->setAction("index.php?action=rename&user=$user->username");
+            //addCSRF parameter is the name of the session variable
+            //Below sets a unique $_SESSION variable name based on GET variables,
+            //so multiple actions can be performed at the same time
+            //without overwriting each others' tokens
+            $renameUserForm->addCSRF($_GET['action'] . $user->username);
+            $renameUserForm->echoForm();
+        } else {
+            echo "The user you have selected does not exist";
+        }
         //Edit groups form
     } elseif (isset($_GET['user']) and $_GET['action'] === "editgroups") {
-        echo "Add or remove <b>{$_GET['user']}</b> from groups<br><br>";
-        //Defined in forms.php
-        renderEditGroupsForm($_GET['user']);
+        $user = new User($_GET['user']);
+        if ($user->exists) {
+            echo "Add or remove <b>$user->formattedUsername</b> from groups<br><br>";
+            //Defined in forms.php
+            renderEditGroupsForm($user->username);
+        } else {
+            echo "The user you have selected does not exist";
+        }
         //Delete user form
     } elseif (isset($_GET['user']) and $_GET['action'] === "delete") {
-        echo "Delete <b>{$_GET['user']}</b><br><br>";
-        $deleteUserForm->setAction("index.php?action=delete&user={$_GET['user']}");
-        $deleteUserForm->addCSRF($_GET['action'] . $_GET['user']);
-        $deleteUserForm->echoForm();
+        $user = new User($_GET['user']);
+        if ($user->exists) {
+            echo "Delete <b>$user->formattedUsername</b><br><br>";
+            $deleteUserForm->setAction("index.php?action=delete&user=$user->username");
+            $deleteUserForm->addCSRF($_GET['action'] . $user->username);
+            $deleteUserForm->echoForm();
+        } else {
+            echo "The user you have selected does not exist";
+        }
+        //Undelete user form
     } elseif (isset($_GET['user']) and $_GET['action'] === "undelete") {
-        echo "Undelete <b>{$_GET['user']}</b><br><br>";
-        $undeleteUserForm->setAction("index.php?action=undelete&user={$_GET['user']}");
-        $undeleteUserForm->addCSRF($_GET['action'] . $_GET['user']);
-        $undeleteUserForm->echoForm();
+        $user = new User($_GET['user']);
+        if ($user->exists) {
+            echo "Undelete <b>$user->formattedUsername</b><br><br>";
+            $undeleteUserForm->setAction("index.php?action=undelete&user=$user->username");
+            $undeleteUserForm->addCSRF($_GET['action'] . $user->username);
+            $undeleteUserForm->echoForm();
+        } else {
+            echo "The user you have selected does not exist";
+        }
     }
 }

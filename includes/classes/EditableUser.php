@@ -26,8 +26,11 @@ class EditableUser extends User
             $query = $mysqli->prepare("UPDATE users SET username = ? WHERE username = ?");
             $query->bind_param("ss", $newUsername, $this->username);
             $query->execute();
-            echo "<b>Success</b><br><br><b>$this->formattedUsername</b> has been renamed to <b>$newUsername</b>";
+
+            $oldFormattedUsername = $this->formattedUsername;
             $this->username = $newUsername;
+            $this->setFormattedUsername();
+            echo "<b>Success</b><br><br><b>$oldFormattedUsername</b> has been renamed to <b>$this->formattedUsername</b>";
             exit();
         } else {
             exit("Sorry, you cannot rename users");
@@ -72,6 +75,8 @@ class EditableUser extends User
         global $currentUser;
         if ($currentUser->hasPerm("deleteusers")) {
             $this->deleteUndeleteQuery(1); //Updates the "deleted" value in the database to 1 (i.e. true)
+            $this->deleted = true;
+            $this->setFormattedUsername(); //Updates formattedUsername (i.e. adds strikethrough)
             exit("<b>Success</b><br><br><b>$this->formattedUsername</b> has been deleted");
         } else {
             exit("Sorry, you cannot delete users");
@@ -83,6 +88,8 @@ class EditableUser extends User
         global $currentUser;
         if ($currentUser->hasPerm("undeleteusers")) {
             $this->deleteUndeleteQuery(0); //Updates the "deleted" value in the database to 0 (i.e. false)
+            $this->deleted = false;
+            $this->setFormattedUsername(); //Updates formattedUsername (i.e. removes strikethrough)
             exit("<b>Success</b><br><br><b>$this->formattedUsername</b> has been restored");
         } else {
             exit("Sorry, you cannot undelete users");
