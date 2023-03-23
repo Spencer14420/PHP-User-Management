@@ -5,6 +5,7 @@ require_once __DIR__ . "/../../config/defaultPerms.php";
 class User
 {
     public $username;
+    public $email;
     public $exists;
     public $deleted;
     public $formattedUsername;
@@ -12,9 +13,15 @@ class User
     private $groups;
     private $userPerms;
 
-    function __construct($username)
+    function __construct($usernameOrEmail, $enteredEmail = false)
     {
-        $this->username = $username;
+        if ($enteredEmail) {
+            $this->email = $usernameOrEmail;
+            $this->username = $this->getUsernameFromEmail();
+        } else {
+            $this->username = $usernameOrEmail;
+            $this->email = $this->getEmailFromUsername();
+        }
         $this->setUseridAndExists();
         $this->checkIfDeleted();
         $this->setFormattedUsername();
@@ -96,5 +103,25 @@ class User
     public function inGroup($group)
     {
         return in_array($group, $this->groups);
+    }
+
+    private function getUsernameFromEmail()
+    {
+        global $mysqli;
+        $query = $mysqli->prepare("SELECT username FROM users WHERE email = ?");
+        $query->bind_param("s", $this->email);
+        $query->execute();
+        $result = $query->get_result();
+        return $result->fetch_assoc()['username'];
+    }
+
+    private function getEmailFromUsername()
+    {
+        global $mysqli;
+        $query = $mysqli->prepare("SELECT email FROM users WHERE username = ?");
+        $query->bind_param("s", $this->username);
+        $query->execute();
+        $result = $query->get_result();
+        return $result->fetch_assoc()['email'];
     }
 }

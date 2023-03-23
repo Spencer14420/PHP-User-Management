@@ -2,13 +2,11 @@
 require_once __DIR__ . "/../standardReq.php";
 require_once __DIR__ . "/../forms.php";
 
-//Check if email is listed in the db
-$query = $mysqli->prepare("SELECT * FROM users WHERE email = ?");
-$query->bind_param("s", $_POST['email']);
-$query->execute();
-$result = $query->get_result();
-if (mysqli_num_rows($result) === 0) {
-    exit("Username or password are incorrect!");
+//Check if user with the entered email does not exist or is deleted
+$user = new User($_POST["email"], true);
+if (!$user->exists or $user->deleted) {
+    echo "We could not find an account with that email address!<br><br>";
+    exit("<a href='index.php?action=login'>Try again</a>");
 }
 
 //Verify email
@@ -35,6 +33,10 @@ if (isset($_GET['verify'])) {
         $entercodeForm->echoForm();
     }
 } else {
+    $query = $mysqli->prepare("SELECT * FROM users WHERE email = ?");
+    $query->bind_param("s", $_POST['email']);
+    $query->execute();
+    $result = $query->get_result();
     $correctCode = $result->fetch_assoc()['password'];
 
     //Check if password/username are incorrect

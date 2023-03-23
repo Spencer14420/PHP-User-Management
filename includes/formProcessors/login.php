@@ -1,20 +1,20 @@
 <?php
 require_once __DIR__ . "/../standardReq.php";
+require_once __DIR__ . "/../classes/user.php";
 
-//Check if username exists
-$query = $mysqli->prepare("SELECT password FROM users WHERE username = ?");
-$query->bind_param("s", $_POST['username']);
-$query->execute();
-$result = $query->get_result();
-if (mysqli_num_rows($result) === 0) {
-    exit("Username or password are incorrect!");
+//Check if username does not exist or is deleted
+$user = new User($_POST['username']);
+if (!$user->exists or $user->deleted) {
+    echo "Username or password are incorrect!<br><br>";
+    exit("<a href='index.php?action=login'>Try again</a>");
 }
 
 $correctPass = $result->fetch_assoc()['password'];
 
 //Check if password/username are incorrect
 if (!password_verify($_POST['pass'], $correctPass)) {
-    exit("Username or password are incorrect!");
+    echo "Username or password are incorrect!<br><br>";
+    exit("<a href='index.php?action=login'>Try again</a>");
 }
 
 //Generate token and store it as a cookie
