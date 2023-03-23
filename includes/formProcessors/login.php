@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . "/../standardReq.php";
-require_once __DIR__ . "/../classes/user.php";
+require_once __DIR__ . "/../classes/User.php";
 
 //Check if username does not exist or is deleted
 $user = new User($_POST['username']);
