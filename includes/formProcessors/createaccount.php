@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . "/../standardReq.php";
-require_once __DIR__ . "/../classes/user.php";
+require_once __DIR__ . "/../classes/User.php";
 
 if (!$nopassMode) {
     //Hash entered password (only present if nopassMode is disabled)
