@@ -28,6 +28,10 @@ function auth()
 
     $username = $result->fetch_assoc()['username'];
     $currentUser = new User($username);
+
+    if ($currentUser->deleted) {
+        require_once __DIR__ . "/../logout.php";
+    }
 }
 
 auth();
