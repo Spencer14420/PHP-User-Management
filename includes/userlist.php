@@ -22,6 +22,7 @@ while ($row = $result->fetch_assoc()) {
     }
 
     echo "<b>{$user->formattedUsername}</b>";
+    echo ($user->email) ? " ($user->email)" : "";
     if ($currentUser->hasPerm("renameusers")) {
         echo " <a href=index.php?action=rename&user=$user->username>(Rename)</a>";
     }
