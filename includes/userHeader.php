@@ -12,6 +12,10 @@ if ($currentUser->username !== false) {
     if (!in_array("createaccount", $perms["all"]) and $currentUser->hasPerm("createaccount")) {
         echo " | <a href='index.php?action=createaccount'>Create Account</a>";
     }
+    //Requested accounts
+    if ($currentUser->hasPerm("requestaccount-review")) {
+        echo " | <a href='index.php?action=reviewrequested'>Requested Accounts</a>";
+    }
     echo " | <a href='logout.php'>Log out</a><br><br>";
 } else {
     echo "<a href='index.php?action=login'>Log in</a>";
