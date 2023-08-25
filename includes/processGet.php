@@ -32,6 +32,9 @@ if (isset($_GET['action'])) {
     } elseif ($_GET['action'] === "requestaccount") {
         $requestAccountForm->setAction("index.php?action=requestaccount");
         $requestAccountForm->echoForm();
+        //Requested accounts panel
+    } elseif ($_GET['action'] === "reviewrequested") {
+        include_once __DIR__ . "/reqAccounts.php";
         //Renameuser form
     } elseif (isset($_GET['user']) and $_GET['action'] === "rename") {
         $user = new User($_GET['user']);

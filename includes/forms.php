@@ -8,42 +8,42 @@ require_once __DIR__ . "/classes/UserObjForm.php";
 
 //Login form
 $loginForm = new Form();
-$loginForm->addInput("text", "username", "Username", true);
-$loginForm->addInput("password", "pass", "Password", true);
+$loginForm->addInput("text", "username", "Username", true, "");
+$loginForm->addInput("password", "pass", "Password", true, "");
 
 //nopass-mode login form
 $nopassloginForm = new Form();
-$nopassloginForm->addInput("text", "email", "Email address", true);
+$nopassloginForm->addInput("text", "email", "Email address", true, "");
 
 //Enter code form
 $entercodeForm = new Form();
-$entercodeForm->addInput("text", "code", "Code", true);
+$entercodeForm->addInput("text", "code", "Code", true, "");
 
 //Create account form
 $createaccountForm = new Form();
-$createaccountForm->addInput("text", "username", "Username", true);
-$createaccountForm->addInput("text", "email", "Email address", true);
-$createaccountForm->addInput("password", "pass", "Password", true);
+$createaccountForm->addInput("text", "username", "Username", true, "");
+$createaccountForm->addInput("text", "email", "Email address", true, "");
+$createaccountForm->addInput("password", "pass", "Password", true, "");
 $createaccountForm->setPerm($currentUser->hasPerm("createaccount"));
 $createaccountForm->setPermError("Sorry, you cannot create an account");
 
 //Nopass-mode create account form
 $nopasscreateaccountForm = new Form();
-$nopasscreateaccountForm->addInput("text", "username", "Username", true);
-$nopasscreateaccountForm->addInput("text", "email", "Email address", true);
+$nopasscreateaccountForm->addInput("text", "username", "Username", true, (isset($_GET["username"])) ? $_GET["username"] : "");
+$nopasscreateaccountForm->addInput("text", "email", "Email address", true, (isset($_GET["email"])) ? $_GET["email"] : "");
 $nopasscreateaccountForm->setPerm($currentUser->hasPerm("createaccount"));
 $nopasscreateaccountForm->setPermError("Sorry, you cannot create an account");
 
 //Request account form
 $requestAccountForm = new Form();
-$requestAccountForm->addInput("text", "email", "Email address", true);
-$requestAccountForm->addInput("text", "name", "Your name", true);
+$requestAccountForm->addInput("text", "email", "Email address", true, "");
+$requestAccountForm->addInput("text", "name", "Your name", true, "");
 $requestAccountForm->setPerm($currentUser->hasPerm("requestaccount"));
 $requestAccountForm->setPermError("Sorry, you cannot request an account");
 
 //Rename user form
 $renameUserForm = new TokenForm();
-$renameUserForm->addInput("text", "newname", "New username", true);
+$renameUserForm->addInput("text", "newname", "New username", true, "");
 $renameUserForm->setPerm($currentUser->hasPerm("renameusers"));
 $renameUserForm->setPermError("Sorry, you cannot rename users");
 
@@ -62,7 +62,8 @@ function renderEditGroupsForm($username)
                     "checkbox",
                     $group,
                     $group,
-                    $editGroupsForm->associatedUser->inGroup($group)
+                    $editGroupsForm->associatedUser->inGroup($group),
+                    ""
                 );
             }
         }
@@ -80,12 +81,12 @@ function renderEditGroupsForm($username)
 
 //Delete user form
 $deleteUserForm = new TokenForm();
-$deleteUserForm->addInput("checkbox", "confirmed", "Check this box to confirm", false);
+$deleteUserForm->addInput("checkbox", "confirmed", "Check this box to confirm", false, "");
 $deleteUserForm->setPerm($currentUser->hasPerm("deleteusers"));
 $deleteUserForm->setPermError("Sorry, you cannot delete users");
 
 //Undelete user form
 $undeleteUserForm = new TokenForm();
-$undeleteUserForm->addInput("checkbox", "confirmed", "Check this box to confirm", false);
+$undeleteUserForm->addInput("checkbox", "confirmed", "Check this box to confirm", false, "");
 $undeleteUserForm->setPerm($currentUser->hasPerm("undeleteusers"));
 $undeleteUserForm->setPermError("Sorry, you cannot undelete users");
