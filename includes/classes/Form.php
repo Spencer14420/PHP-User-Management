@@ -56,9 +56,16 @@ class Form
                     $required = $input[3] ? "required" : "";
                 }
 
+                //Only add "value" if input is text or password
+                if ($input[0] === "text" or $input[0] === "password") {
+                    $value = "value='$input[4]'";
+                } else {
+                    $value = "";
+                }
+
                 $str = <<<INPUT
                     <label for='$input[1]'>$input[2]: </label>
-                    <input $required type='$input[0]' id='$input[1]' name='$input[1]' value='$input[4]'><br><br>
+                    <input $required type='$input[0]' id='$input[1]' name='$input[1]' $value><br><br>
                 INPUT;
                 echo $str;
             }
