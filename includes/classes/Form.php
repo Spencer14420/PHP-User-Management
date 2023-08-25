@@ -12,9 +12,9 @@ class Form
 
     //If the input is a checkbox,
     //$input[3] (required) is used to set the "checked" parameter
-    public function addInput($type, $name, $question, $required, $filled)
+    public function addInput($type, $name, $question, $required)
     {
-        $this->inputs[] = [$type, $name, $question, $required, $filled];
+        $this->inputs[] = [$type, $name, $question, $required];
     }
 
 
@@ -58,7 +58,7 @@ class Form
 
                 $str = <<<INPUT
                     <label for='$input[1]'>$input[2]: </label>
-                    <input $required type='$input[0]' id='$input[1]' name='$input[1]' value='$input[4]'><br><br>
+                    <input $required type='$input[0]' id='$input[1]' name='$input[1]'><br><br>
                 INPUT;
                 echo $str;
             }
