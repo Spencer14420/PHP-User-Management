@@ -37,6 +37,35 @@ class EditableUser extends User
         }
     }
 
+    public function editEmail($newEmail)
+    {
+        global $mysqli;
+        global $currentUser;
+
+        //Check if email is taken
+        $query = $mysqli->prepare("SELECT * FROM users WHERE email = ?");
+        $query->bind_param("s", $newEmail);
+        $query->execute();
+        $result = $query->get_result();
+
+        if (mysqli_num_rows($result) > 0) {
+            exit("<b>Error</b>: An account with the email address \"<b>{$newEmail}</b>\" already exists");
+        }
+
+        //Rename user
+        if ($currentUser->hasPerm("editemail")) {
+            $query = $mysqli->prepare("UPDATE users SET email = ? WHERE email = ?");
+            $query->bind_param("ss", $newEmail, $this->email);
+            $query->execute();
+
+            $this->email = $newEmail;
+            echo "<b>Success</b><br><br><b>$this->username's</b> email address has been changed to <b>$this->email</b>";
+            exit();
+        } else {
+            exit("Sorry, you cannot edit a user's email address");
+        }
+    }
+
     public function changeGroups($newGroups)
     {
         global $mysqli;

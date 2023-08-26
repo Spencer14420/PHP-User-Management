@@ -47,6 +47,12 @@ $renameUserForm->addInput("text", "newname", "New username", true, "");
 $renameUserForm->setPerm($currentUser->hasPerm("renameusers"));
 $renameUserForm->setPermError("Sorry, you cannot rename users");
 
+//Edit email form
+$editEmailForm = new TokenForm();
+$editEmailForm->addInput("text", "newEmail", "New email address", true, "");
+$editEmailForm->setPerm($currentUser->hasPerm("editemail"));
+$editEmailForm->setPermError("Sorry, you cannot edit a user's email address");
+
 //Edit groups form, called by processGet.php
 function renderEditGroupsForm($username)
 {

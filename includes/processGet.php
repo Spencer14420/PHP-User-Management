@@ -50,6 +50,22 @@ if (isset($_GET['action'])) {
         } else {
             echo "The user you have selected does not exist";
         }
+        //Renameuser form
+    } elseif (isset($_GET['user']) and $_GET['action'] === "editemail") {
+        $user = new User($_GET['user']);
+        if ($user->exists) {
+            echo "Edit <b>$user->formattedUsername's</b> email address<br><br>";
+            echo "Current email address: <b>$user->email</b><br><br>";
+            $editEmailForm->setAction("index.php?action=editemail&user=$user->username");
+            //addCSRF parameter is the name of the session variable
+            //Below sets a unique $_SESSION variable name based on GET variables,
+            //so multiple actions can be performed at the same time
+            //without overwriting each others' tokens
+            $editEmailForm->addCSRF($_GET['action'] . $user->username);
+            $editEmailForm->echoForm();
+        } else {
+            echo "The user you have selected does not exist";
+        }
         //Edit groups form
     } elseif (isset($_GET['user']) and $_GET['action'] === "editgroups") {
         $user = new User($_GET['user']);

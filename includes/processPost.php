@@ -33,6 +33,11 @@ if (isset($_GET['action'])) {
         if (validateCSRF("rename" . $_GET['user'], $_POST['csrf'])) {
             require_once __DIR__ . "/formProcessors/renameUser.php";
         }
+        //Edit email form
+    } elseif (isset($_GET['user']) and $_GET['action'] === "editemail") {
+        if (validateCSRF("editemail" . $_GET['user'], $_POST['csrf'])) {
+            require_once __DIR__ . "/formProcessors/editEmail.php";
+        }
     } elseif (isset($_GET['user']) and $_GET['action'] === "editgroups") {
         if (validateCSRF("editgroups" . $_GET['user'], $_POST['csrf'])) {
             require_once __DIR__ . "/formProcessors/editGroups.php";

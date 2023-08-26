@@ -32,5 +32,8 @@ while ($row = $result->fetch_assoc()) {
     if ($currentUser->hasPerm("groupusers")) {
         echo " <a href=index.php?action=editgroups&user=$user->username>(Edit groups)</a>";
     }
+    if ($currentUser->hasPerm("editemail")) {
+        echo " <a href=index.php?action=editemail&user=$user->username>(Edit email)</a>";
+    }
     echo "<br><br>";
 }
