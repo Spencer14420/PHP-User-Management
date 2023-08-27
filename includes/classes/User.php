@@ -78,6 +78,12 @@ class User
         $query->execute();
         $result = $query->get_result();
         $groups = ["all"];
+
+        //Add user to implicit "user" group if they are logged in (i.e. username is not false)
+        if ($this->username !== false) {
+            $groups[] = "user";
+        }
+
         while ($row = $result->fetch_assoc()) {
             $groups[] = $row['groupname'];
         }

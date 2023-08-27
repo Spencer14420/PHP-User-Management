@@ -61,9 +61,9 @@ function renderEditGroupsForm($username)
         global $perms; //Defined in defaultPerms.php
         global $currentUser;
 
-        //Adds a checkbox for each group defined in the $perms array, other than "all"
+        //Adds a checkbox for each group defined in the $perms array, other than "all" and "user"
         foreach ($perms as $group => $perm) {
-            if ($group !== "all") {
+            if ($group !== "all" and $group !== "user") {
                 $editGroupsForm->addInput(
                     "checkbox",
                     $group,

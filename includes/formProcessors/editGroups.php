@@ -10,7 +10,7 @@ $selectedUser = new EditableUser($_GET['user']);
 //Create array of selected groups
 $selectedGroups = [];
 foreach ($perms as $key => $perm) {
-    if ($key !== "all" and $_POST[$key] == true) {
+    if (($key !== "all" or $key !== "user") and $_POST[$key] == true) {
         $selectedGroups[] = $key;
     }
 }
