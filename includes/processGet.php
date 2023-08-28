@@ -98,5 +98,16 @@ if (isset($_GET['action'])) {
         } else {
             echo "The user you have selected does not exist";
         }
+    } elseif (isset($_GET['user']) and $_GET['action'] === "declinereq") {
+        include_once __DIR__ . "/classes/RequestedAccount.php";
+        $request = new RequestedAccount($_GET['user']);
+        if ($request->exists) {
+            echo "Decline <b>$request->username</b><br><br>";
+            $declineReqAcc->setAction("index.php?action=declinereq&user=$request->username");
+            $declineReqAcc->addCSRF($_GET['action'] . $request->username);
+            $declineReqAcc->echoForm();
+        } else {
+            echo "An account with the username you have selected has not been requested";
+        }
     }
 }

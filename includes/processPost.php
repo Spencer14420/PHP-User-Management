@@ -50,5 +50,9 @@ if (isset($_GET['action'])) {
         if (validateCSRF("undelete" . $_GET['user'], $_POST['csrf'])) {
             require_once __DIR__ . "/formProcessors/undeleteUser.php";
         }
+    } elseif (isset($_GET['user']) and $_GET['action'] === "declinereq") {
+        if (validateCSRF("declinereq" . $_GET['user'], $_POST['csrf'])) {
+            require_once __DIR__ . "/formProcessors/declineReq.php";
+        }
     }
 }

@@ -17,5 +17,5 @@ $result = $query->get_result();
 
 while ($row = $result->fetch_assoc()) {
     echo "<b>{$row['name']}</b> ({$row['email']})";
-    echo " (<a href='index.php?action=createaccount&username={$row['name']}&email={$row['email']}'>Create account</a>) (<a>Decline</a>)";
+    echo " (<a href='index.php?action=createaccount&username={$row['name']}&email={$row['email']}'>Create account</a>) (<a href='index.php?action=declinereq&user={$row['name']}'>Decline</a>)<br><br>";
 }

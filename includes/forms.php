@@ -96,3 +96,9 @@ $undeleteUserForm = new TokenForm();
 $undeleteUserForm->addInput("checkbox", "confirmed", "Check this box to confirm", false, "");
 $undeleteUserForm->setPerm($currentUser->hasPerm("undeleteusers"));
 $undeleteUserForm->setPermError("Sorry, you cannot undelete users");
+
+//Decline requested account form
+$declineReqAcc = new TokenForm();
+$declineReqAcc->addInput("checkbox", "confirmed", "Check this box to confirm", false, "");
+$declineReqAcc->setPerm($currentUser->hasPerm("requestaccount-review"));
+$declineReqAcc->setPermError("Sorry, you cannot review account requests");
