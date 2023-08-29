@@ -4,11 +4,18 @@ require_once __DIR__ . "/../../config/mysql.php";
 class RequestedAccount
 {
     public $username;
+    public $email;
     public $exists;
 
-    function __construct($username)
+    function __construct($usernameOrEmail, $enteredEmail = false)
     {
-        $this->username = $username;
+        if ($enteredEmail) {
+            $this->email = $usernameOrEmail;
+            $this->username = $this->getUsernameFromEmail();
+        } else {
+            $this->username = $usernameOrEmail;
+            $this->email = $this->getEmailFromUsername();
+        }
         $this->checkIfExists();
     }
 
@@ -38,5 +45,25 @@ class RequestedAccount
         } else {
             exit("Sorry, you cannot review account requests");
         }
+    }
+
+    private function getUsernameFromEmail()
+    {
+        global $mysqli;
+        $query = $mysqli->prepare("SELECT name FROM req_accounts WHERE email = ?");
+        $query->bind_param("s", $this->email);
+        $query->execute();
+        $result = $query->get_result();
+        return $result->fetch_assoc()['name'];
+    }
+
+    private function getEmailFromUsername()
+    {
+        global $mysqli;
+        $query = $mysqli->prepare("SELECT email FROM req_accounts WHERE name = ?");
+        $query->bind_param("s", $this->username);
+        $query->execute();
+        $result = $query->get_result();
+        return $result->fetch_assoc()['email'];
     }
 }

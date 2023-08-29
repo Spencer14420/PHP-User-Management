@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . "/../standardReq.php";
 require_once __DIR__ . "/../classes/User.php";
+require_once __DIR__ . "/../classes/RequestedAccount.php";
 
 if (!$nopassMode) {
     //Hash entered password (only present if nopassMode is disabled)
@@ -37,6 +38,7 @@ if ($user->exists) {
     exit();
 }
 
+//Create Account
 if (!$nopassMode) {
     $query = $mysqli->prepare("INSERT INTO users (username, password, email) VALUES (?, ?, ?)");
     $query->bind_param("sss", $_POST['username'], $hashpass, $_POST['email']);
@@ -45,5 +47,12 @@ if (!$nopassMode) {
     $query->bind_param("ss", $_POST['username'], $_POST['email']);
 }
 $query->execute();
+
+//Check for any requested accounts with the same email, and remove them
+$reqAccount = new RequestedAccount($_POST["email"], true);
+if ($reqAccount->exists) {
+    $reqAccount->deleteReq();
+}
+
 echo "Your account has been created!<br><br>",
 "<a href='index.php'>Log in</a>";
