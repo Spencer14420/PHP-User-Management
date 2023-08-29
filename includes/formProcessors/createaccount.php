@@ -58,5 +58,11 @@ if ($reqAccount->exists) {
     $reqAccount->deleteReq();
 }
 
-echo "Your account has been created!<br><br>",
-"<a href='index.php'>Log in</a>";
+//Success message when not logged in
+if ($currentUser->username === false) {
+    echo "Your account has been created!<br><br>",
+    "<a href='index.php'>Log in</a>";
+} else {
+    //Success message when logged in
+    echo "The account \"<b>{$_POST['username']}</b>\" has been created";
+}
