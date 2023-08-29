@@ -3,6 +3,10 @@ require_once __DIR__ . "/../standardReq.php";
 require_once __DIR__ . "/../classes/User.php";
 require_once __DIR__ . "/../classes/RequestedAccount.php";
 
+if (!$currentUser->hasPerm("createaccount")) {
+    exit("Sorry, you cannot create an account");
+}
+
 if (!$nopassMode) {
     //Hash entered password (only present if nopassMode is disabled)
     $hashpass = password_hash($_POST['pass'], PASSWORD_DEFAULT);
