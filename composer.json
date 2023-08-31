@@ -1,0 +1,10 @@
+{
+    "name": "spencer/php-user-management",
+    "authors": [
+        {
+            "name": "Spencer14420",
+            "email": "67592325+Spencer14420@users.noreply.github.com"
+        }
+    ],
+    "require": {}
+}
