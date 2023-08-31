@@ -1,0 +1,17 @@
+{
+    "name": "spencer/php-user-management",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Spencer\\PhpUserManagement\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Spencer14420",
+            "email": "67592325+Spencer14420@users.noreply.github.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {}
+}
