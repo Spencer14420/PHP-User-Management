@@ -3,3 +3,4 @@ mysql.php
 systemSettings.php
 /vendor/
 phpunit
+.prettierignore
