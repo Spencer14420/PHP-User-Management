@@ -5,7 +5,9 @@ require_once __DIR__ . "/../../config/defaultPerms.php";
 class User
 {
     public $username;
+    public $sanitizedUsername;
     public $email;
+    public $sanitizedEmail;
     public $exists;
     public $deleted;
     public $formattedUsername;
@@ -22,6 +24,8 @@ class User
             $this->username = $usernameOrEmail;
             $this->email = $this->getEmailFromUsername();
         }
+        $this->sanitizedUsername = htmlspecialchars($this->username);
+        $this->sanitizedEmail = htmlspecialchars($this->email);
         $this->setUseridAndExists();
         $this->checkIfDeleted();
         $this->setFormattedUsername();
@@ -33,9 +37,9 @@ class User
     protected function setFormattedUsername()
     {
         if ($this->deleted) {
-            $this->formattedUsername = "<s>$this->username</s>";
+            $this->formattedUsername = "<s>$this->sanitizedUsername</s>";
         } else {
-            $this->formattedUsername = $this->username;
+            $this->formattedUsername = $this->sanitizedUsername;
         }
     }
 

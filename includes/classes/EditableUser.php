@@ -59,7 +59,7 @@ class EditableUser extends User
             $query->execute();
 
             $this->email = $newEmail;
-            echo "<b>Success</b><br><br><b>$this->username's</b> email address has been changed to <b>$this->email</b>";
+            echo "<b>Success</b><br><br><b>$this->sanitizedUsername's</b> email address has been changed to <b>$this->sanitizedEmail</b>";
             exit();
         } else {
             exit("Sorry, you cannot edit a user's email address");

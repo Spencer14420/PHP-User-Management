@@ -4,7 +4,9 @@ require_once __DIR__ . "/../../config/mysql.php";
 class RequestedAccount
 {
     public $username;
+    public $sanitizedUsername;
     public $email;
+    public $sanitizedEmail;
     public $exists;
 
     function __construct($usernameOrEmail, $enteredEmail = false)
@@ -16,6 +18,8 @@ class RequestedAccount
             $this->username = $usernameOrEmail;
             $this->email = $this->getEmailFromUsername();
         }
+        $this->sanitizedUsername = htmlspecialchars($this->username);
+        $this->sanitizedEmail = htmlspecialchars($this->email);
         $this->checkIfExists();
     }
 
@@ -41,7 +45,7 @@ class RequestedAccount
             $query = $mysqli->prepare("DELETE FROM req_accounts WHERE name = ?");
             $query->bind_param("s", $this->username);
             $query->execute();
-            exit("<b>Success</b><br><br>Request from <b>$this->username</b> has been deleted");
+            exit("<b>Success</b><br><br>Request from <b>$this->sanitizedUsername</b> has been deleted");
         } else {
             exit("Sorry, you cannot review account requests");
         }

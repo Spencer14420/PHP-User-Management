@@ -22,18 +22,19 @@ while ($row = $result->fetch_assoc()) {
     }
 
     echo "<b>{$user->formattedUsername}</b>";
-    echo ($user->email) ? " ($user->email)" : "";
+    echo ($user->email) ? " ($user->sanitizedEmail)" : "";
+
     if ($currentUser->hasPerm("renameusers")) {
-        echo " <a href=index.php?action=rename&user=$user->username>(Rename)</a>";
+        echo " <a href=index.php?action=rename&user=$$user->sanitizedUsername>(Rename)</a>";
     }
     if ($currentUser->hasPerm("{$deleteAction}users")) {
-        echo " <a href=index.php?action=$deleteAction&user=$user->username>(" . ucfirst($deleteAction) . ")</a>";
+        echo " <a href=index.php?action=$deleteAction&user=$$user->sanitizedUsername>(" . ucfirst($deleteAction) . ")</a>";
     }
     if ($currentUser->hasPerm("groupusers")) {
-        echo " <a href=index.php?action=editgroups&user=$user->username>(Edit groups)</a>";
+        echo " <a href=index.php?action=editgroups&user=$$user->sanitizedUsername>(Edit groups)</a>";
     }
     if ($currentUser->hasPerm("editemail")) {
-        echo " <a href=index.php?action=editemail&user=$user->username>(Edit email)</a>";
+        echo " <a href=index.php?action=editemail&user=$$user->sanitizedUsername>(Edit email)</a>";
     }
     echo "<br><br>";
 }

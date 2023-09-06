@@ -55,7 +55,7 @@ if (isset($_GET['action'])) {
         $user = new User($_GET['user']);
         if ($user->exists) {
             echo "Edit <b>$user->formattedUsername's</b> email address<br><br>";
-            echo "Current email address: <b>$user->email</b><br><br>";
+            echo "Current email address: <b>$user->sanitizedEmail</b><br><br>";
             $editEmailForm->setAction("index.php?action=editemail&user=$user->username");
             //addCSRF parameter is the name of the session variable
             //Below sets a unique $_SESSION variable name based on GET variables,
@@ -102,7 +102,7 @@ if (isset($_GET['action'])) {
         include_once __DIR__ . "/classes/RequestedAccount.php";
         $request = new RequestedAccount($_GET['user']);
         if ($request->exists) {
-            echo "Decline <b>$request->username</b><br><br>";
+            echo "Decline <b>$request->sanitizedUsername</b> ($request->sanitizedEmail)<br><br>";
             $declineReqAcc->setAction("index.php?action=declinereq&user=$request->username");
             $declineReqAcc->addCSRF($_GET['action'] . $request->username);
             $declineReqAcc->echoForm();
