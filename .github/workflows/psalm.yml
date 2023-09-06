@@ -7,12 +7,12 @@ name: Psalm Security Scan
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
     # The branches below must be a subset of the branches above
-    branches: [ "main" ]
+    branches: ["main"]
   schedule:
-    - cron: '39 5 * * 6'
+    - cron: "39 5 * * 6"
 
 permissions:
   contents: read
@@ -26,6 +26,9 @@ jobs:
       actions: read # only required for a private repository by github/codeql-action/upload-sarif to get the Action run status
 
     steps:
+      - name: Setup PHP Action
+        uses: shivammathur/setup-php@2.25.5
+
       - name: Checkout code
         uses: actions/checkout@v3
 
