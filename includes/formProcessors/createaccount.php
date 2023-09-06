@@ -7,16 +7,26 @@ if (!$currentUser->hasPerm("createaccount")) {
     exit("Sorry, you cannot create an account");
 }
 
+//Sanitize email
+$email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
+
 if (!$nopassMode) {
     //Hash entered password (only present if nopassMode is disabled)
     $hashpass = password_hash($_POST['pass'], PASSWORD_DEFAULT);
 } else {
     //Validate email (only present if nopassMode is enabled)
-    if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         echo "Please enter a valid email address<br><br>",
         "<a href='index.php?action=createaccount'>Try again</a>";
         exit();
     }
+}
+
+//Check if username contains spaces
+if (str_contains($_POST['username'], " ")) {
+    echo "Sorry, usernames cannot contain spaces<br>";
+    echo "<a href='index.php?action=createaccount'>Go back</a>";
+    exit();
 }
 
 //Check if username already exists
@@ -38,10 +48,10 @@ if ($user->exists) {
 //Create Account
 if (!$nopassMode) {
     $query = $mysqli->prepare("INSERT INTO users (username, password, email) VALUES (?, ?, ?)");
-    $query->bind_param("sss", $_POST['username'], $hashpass, $_POST['email']);
+    $query->bind_param("sss", $_POST['username'], $hashpass, $email);
 } else {
     $query = $mysqli->prepare("INSERT INTO users (username, email) VALUES (?, ?)");
-    $query->bind_param("ss", $_POST['username'], $_POST['email']);
+    $query->bind_param("ss", $_POST['username'], $email);
 }
 $query->execute();
 
