@@ -19,7 +19,7 @@ class User
             $this->email = $usernameOrEmail;
             $this->username = $this->getUsernameFromEmail();
         } else {
-            $this->username = $usernameOrEmail;
+            $this->username = htmlspecialchars($usernameOrEmail);
             $this->email = $this->getEmailFromUsername();
         }
         $this->setUseridAndExists();
