@@ -7,8 +7,9 @@ if (!$currentUser->hasPerm("createaccount")) {
     exit("Sorry, you cannot create an account");
 }
 
-//Sanitize email
+//Sanitize email and username
 $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
+$username = htmlspecialchars($_POST['username']);
 
 if (!$nopassMode) {
     //Hash entered password (only present if nopassMode is disabled)
@@ -23,14 +24,14 @@ if (!$nopassMode) {
 }
 
 //Check if username contains spaces
-if (str_contains($_POST['username'], " ")) {
+if (str_contains($username, " ")) {
     echo "Sorry, usernames cannot contain spaces<br>";
     echo "<a href='index.php?action=createaccount'>Go back</a>";
     exit();
 }
 
 //Check if username already exists
-$user = new User($_POST['username']);
+$user = new User($username);
 if ($user->exists) {
     echo "That username already exists!<br><br>",
     "<a href='index.php?action=createaccount'>Try again</a>";
@@ -48,15 +49,15 @@ if ($user->exists) {
 //Create Account
 if (!$nopassMode) {
     $query = $mysqli->prepare("INSERT INTO users (username, password, email) VALUES (?, ?, ?)");
-    $query->bind_param("sss", $_POST['username'], $hashpass, $email);
+    $query->bind_param("sss", $username, $hashpass, $email);
 } else {
     $query = $mysqli->prepare("INSERT INTO users (username, email) VALUES (?, ?)");
-    $query->bind_param("ss", $_POST['username'], $email);
+    $query->bind_param("ss", $username, $email);
 }
 $query->execute();
 
 //Check for any requested accounts with the same email, and remove them
-$reqAccount = new RequestedAccount($_POST["email"], true);
+$reqAccount = new RequestedAccount($email, true);
 if ($reqAccount->exists) {
     $reqAccount->deleteReq();
 }
@@ -67,5 +68,5 @@ if ($currentUser->username === false) {
     "<a href='index.php'>Log in</a>";
 } else {
     //Success message when logged in
-    echo "The account \"<b>{$_POST['username']}</b>\" has been created";
+    echo "The account \"<b>{$username}</b>\" has been created";
 }
