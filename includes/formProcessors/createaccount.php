@@ -19,13 +19,6 @@ if (!$nopassMode) {
     }
 }
 
-//Check if user has "createaccount" perm
-if (!$currentUser->hasPerm("createaccount")) {
-    echo "Sorry, you cannot create an account<br><br>",
-    "<a href='index.php'>Go back</a>";
-    exit();
-}
-
 //Check if username already exists
 $user = new User($_POST['username']);
 if ($user->exists) {
