@@ -19,7 +19,7 @@ if (!password_verify($_POST['pass'], $correctPass)) {
 
 //Generate token and store it as a cookie
 $token = hash("sha256", random_bytes(265));
-setcookie("sp-token", $token, 0, "/", $domain);
+setcookie("sp-token", $token, 0, "/", $domain, true, true);
 
 //Store hashed token in database
 $hashtoken = hash("sha256", $token);
