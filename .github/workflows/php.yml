@@ -19,9 +19,6 @@ jobs:
       - name: Update and Upgrade
         run: sudo apt-get update && sudo apt-get upgrade
 
-      - name: Reboot
-        run: sudo shutdown -r now
-
       - name: Install MySQLi
         run: sudo apt-get install php-mysql
 
