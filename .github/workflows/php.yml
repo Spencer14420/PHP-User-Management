@@ -16,6 +16,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Start MySQL
+        run: sudo service mysql start
+
       - name: Check MySQL version
         run: mysql -v
 
