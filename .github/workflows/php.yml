@@ -20,7 +20,7 @@ jobs:
         run: sudo systemctl start mysql.service
 
       - name: Create demo database
-        run: mysql -uroot -proot < /home/runner/work/PHP-User-Management/PHP-User-Managementdemodb.sql
+        run: mysql -uroot -proot < /home/runner/work/PHP-User-Management/PHP-User-Management/demodb.sql
 
       - name: Validate composer.json and composer.lock
         run: composer validate --strict
