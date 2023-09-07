@@ -20,7 +20,7 @@ jobs:
         run: sudo systemctl start mysql.service
 
       - name: Check MySQL version
-        run: sudo mysql -v
+        run: mysql -v -uroot -proot
 
       - name: Validate composer.json and composer.lock
         run: composer validate --strict
