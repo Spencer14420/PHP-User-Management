@@ -4,6 +4,8 @@ SET time_zone = "+00:00";
 
 CREATE DATABASE phpuser;
 
+USE phpuser;
+
 CREATE TABLE `groups` (
   `id` int(11) NOT NULL,
   `groupname` text NOT NULL,
