@@ -3,12 +3,7 @@ require_once __DIR__ . "/../standardReq.php";
 require_once __DIR__ . "/../forms.php";
 require_once __DIR__ . "/../classes/User.php";
 
-//Check if user with the entered email does not exist or is deleted
 $user = new User($_POST["email"], true);
-if (!$user->exists or $user->deleted) {
-    echo "We could not find an account with that email address!<br><br>";
-    exit("<a href='index.php?action=login'>Try again</a>");
-}
 
 //Verify email
 if (isset($_GET['verify'])) {
@@ -16,6 +11,17 @@ if (isset($_GET['verify'])) {
         //Generate random code
         $chars = "0123456789";
         $code = substr(str_shuffle($chars), 0, 5);
+
+        //Enter code form
+        $entercodeForm->setAction("index.php?action=login");
+        $entercodeForm->addHiddenInput("email", $_POST["email"]);
+        $entercodeForm->echoForm();
+
+        //Don't modify the database or email the user
+        //if the accound doesn't exist or is deleted
+        if (!$user->exists or $user->deleted) {
+            exit();
+        }
 
         //Add code to database
         $hashcode = password_hash($code, PASSWORD_DEFAULT);
@@ -27,11 +33,6 @@ if (isset($_GET['verify'])) {
         $headers = "From: {$sysEmail}";
         $message = "Your code: {$code}";
         mail($_POST['email'], "Your code for {$domain}", $message, $headers);
-
-        //Enter code form
-        $entercodeForm->setAction("index.php?action=login");
-        $entercodeForm->addHiddenInput("email", $_POST["email"]);
-        $entercodeForm->echoForm();
     }
 } else {
     $query = $mysqli->prepare("SELECT * FROM users WHERE email = ?");
