@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 require_once __DIR__ . "/../src/includes/auth.php";
 require_once __DIR__ . "/../src/config/mysql.php";
 require_once __DIR__ . "/../src/config/systemSettings.php";
