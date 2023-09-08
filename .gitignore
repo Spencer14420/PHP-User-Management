@@ -3,3 +3,4 @@ systemSettings.php
 /vendor/
 phpunit
 .prettierignore
+.phpunit.cache/test-results
