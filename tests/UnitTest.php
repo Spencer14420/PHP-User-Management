@@ -7,6 +7,13 @@ require_once __DIR__ . "/../config/mysql.php";
 require_once __DIR__ . "/../config/systemSettings.php";
 require_once __DIR__ . "/../includes/classes/User.php";
 
+$mysqli = new mysqli("localhost", "root", "root", "phpuser");
+
+if ($mysqli->connect_errno) {
+    echo "Failed to connect to MySQL: " . $mysqli->connect_error;
+    exit();
+}
+
 use PHPUnit\Framework\TestCase;
 
 final class UnitTest extends TestCase
