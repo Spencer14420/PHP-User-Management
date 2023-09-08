@@ -52,13 +52,14 @@ class EditableUser extends User
             exit("<b>Error</b>: An account with the email address \"<b>{$newEmail}</b>\" already exists");
         }
 
-        //Rename user
+        //Change email
         if ($currentUser->hasPerm("editemail")) {
             $query = $mysqli->prepare("UPDATE users SET email = ? WHERE email = ?");
             $query->bind_param("ss", $newEmail, $this->email);
             $query->execute();
 
             $this->email = $newEmail;
+            $this->sanitizedEmail = htmlspecialchars($newEmail);
             echo "<b>Success</b><br><br><b>$this->sanitizedUsername's</b> email address has been changed to <b>$this->sanitizedEmail</b>";
             exit();
         } else {
