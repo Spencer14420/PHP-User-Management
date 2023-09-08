@@ -9,12 +9,6 @@
     findUnusedCode="true"
 >
     <projectFiles>
-        <file name="index.php" />
-        <file name="logout.php" />
-        <directory name="config" />
-        <directory name="includes" />
-        <ignoreFiles>
-            <directory name="vendor" />
-        </ignoreFiles>
+        <directory name="src" />
     </projectFiles>
 </psalm>
