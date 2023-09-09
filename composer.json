@@ -1,11 +1,11 @@
 {
-  "name": "spencer/php-user-management",
+  "name": "spencer14420/php-user-management",
   "description": "PHP user-management script",
   "license": "MIT",
   "authors": [
     {
       "name": "Spencer14420",
-      "email": "67592325+Spencer14420@users.noreply.github.com"
+      "email": "sdp.misc@gmail.com"
     }
   ],
   "require-dev": {
