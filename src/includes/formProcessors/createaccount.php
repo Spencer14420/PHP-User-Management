@@ -17,24 +17,21 @@ if (!$nopassMode) {
 } else {
     //Validate email (only present if nopassMode is enabled)
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        echo "Please enter a valid email address<br><br>",
-        "<a href='index.php?action=createaccount'>Try again</a>";
+        echo $GLOBALS['errorCreateAccountInvalidEmail'];
         exit();
     }
 }
 
 //Check if username contains spaces
 if (str_contains($username, " ")) {
-    echo "Sorry, usernames cannot contain spaces<br>";
-    echo "<a href='index.php?action=createaccount'>Go back</a>";
+    echo $GLOBALS['errorCreateAccountHasSpaces'];
     exit();
 }
 
 //Check if username already exists
 $user = new User($username);
 if ($user->exists) {
-    echo "That username already exists!<br><br>",
-    "<a href='index.php?action=createaccount'>Try again</a>";
+    echo $GLOBALS['errorCreateAccountExists'];
     exit();
 }
 
