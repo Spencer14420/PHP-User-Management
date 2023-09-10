@@ -30,6 +30,7 @@ class EditableUser extends User
 
             $oldFormattedUsername = $this->formattedUsername;
             $this->username = $newUsername;
+            $this->sanitizedUsername = htmlspecialchars($this->username);
             $this->setFormattedUsername();
             echo "<b>Success</b><br><br><b>$oldFormattedUsername</b> has been renamed to <b>$this->formattedUsername</b>";
             exit();
