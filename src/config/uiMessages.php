@@ -2,6 +2,14 @@
 
 //General Messages
 
+$GLOBALS['errorGeneric'] = <<<CONTENT
+    Sorry, something went wrong. Please try again later
+CONTENT;
+
+$GLOBALS['errorPageNotFound'] = <<<CONTENT
+    Sorry, the page could not be found
+CONTENT;
+
 $GLOBALS['errorConfirmBoxUnchecked'] = <<<CONTENT
     You must check the box to confirm
 CONTENT;
