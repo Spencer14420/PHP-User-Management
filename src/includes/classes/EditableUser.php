@@ -1,5 +1,6 @@
 <?php
 
+require_once __DIR__ . "/../standardReq.php";
 require_once __DIR__ . "/User.php";
 
 //Adds methods to change data associated
@@ -33,7 +34,8 @@ class EditableUser extends User
             echo "<b>Success</b><br><br><b>$oldFormattedUsername</b> has been renamed to <b>$this->formattedUsername</b>";
             exit();
         } else {
-            exit("Sorry, you cannot rename users");
+            echo $GLOBALS['errorNoRenameusersPerm'];
+            exit();
         }
     }
 
@@ -63,7 +65,8 @@ class EditableUser extends User
             echo "<b>Success</b><br><br><b>$this->sanitizedUsername's</b> email address has been changed to <b>$this->sanitizedEmail</b>";
             exit();
         } else {
-            exit("Sorry, you cannot edit a user's email address");
+            echo $GLOBALS['errorNoEditemailPerm'];
+            exit();
         }
     }
 
@@ -87,7 +90,8 @@ class EditableUser extends User
 
             exit("<b>Success</b><br><br>Group membership of <b>$this->formattedUsername</b> has been changed");
         } else {
-            exit("Sorry, you cannot add or remove users from groups");
+            echo $GLOBALS['errorNoGroupusersPerm'];
+            exit();
         }
     }
 
@@ -109,7 +113,8 @@ class EditableUser extends User
             $this->setFormattedUsername(); //Updates formattedUsername (i.e. adds strikethrough)
             exit("<b>Success</b><br><br><b>$this->formattedUsername</b> has been deleted");
         } else {
-            exit("Sorry, you cannot delete users");
+            echo $GLOBALS['errorNoDeleteusersPerm'];
+            exit();
         }
     }
 
@@ -122,7 +127,8 @@ class EditableUser extends User
             $this->setFormattedUsername(); //Updates formattedUsername (i.e. removes strikethrough)
             exit("<b>Success</b><br><br><b>$this->formattedUsername</b> has been restored");
         } else {
-            exit("Sorry, you cannot undelete users");
+            $GLOBALS['errorNoUndeleteusersPerm'];
+            exit();
         }
     }
 }

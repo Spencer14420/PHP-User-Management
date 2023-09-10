@@ -5,16 +5,16 @@ require_once __DIR__ . "/../classes/User.php";
 //Check if username does not exist or is deleted
 $user = new User($_POST['username']);
 if (!$user->exists or $user->deleted) {
-    echo "Username or password are incorrect!<br><br>";
-    exit("<a href='index.php?action=login'>Try again</a>");
+    echo $GLOBALS['errorWrongUserPass'];
+    exit();
 }
 
 $correctPass = $result->fetch_assoc()['password'];
 
 //Check if password/username are incorrect
 if (!password_verify($_POST['pass'], $correctPass)) {
-    echo "Username or password are incorrect!<br><br>";
-    exit("<a href='index.php?action=login'>Try again</a>");
+    echo $GLOBALS['errorWrongUserPass'];
+    exit();
 }
 
 //Generate token and store it as a cookie

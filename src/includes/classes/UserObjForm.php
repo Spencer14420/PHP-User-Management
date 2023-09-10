@@ -7,7 +7,7 @@ require_once __DIR__ . "/User.php";
 //based on data associated with the user
 class UserObjForm extends TokenForm
 {
-    public User $associatedUser;
+    public $associatedUser;
 
     function __construct($username)
     {

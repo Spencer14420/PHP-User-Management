@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . "/auth.php";
+require_once __DIR__ . "/standardReq.php";
 require_once __DIR__ . "/../config/defaultPerms.php"; //Needed by renderEditGroupsForm();
 require_once __DIR__ . "/classes/Form.php";
 require_once __DIR__ . "/classes/TokenForm.php";
@@ -25,33 +25,33 @@ $createaccountForm->addInput("text", "username", "Username", true, "");
 $createaccountForm->addInput("text", "email", "Email address", true, "");
 $createaccountForm->addInput("password", "pass", "Password", true, "");
 $createaccountForm->setPerm($currentUser->hasPerm("createaccount"));
-$createaccountForm->setPermError("Sorry, you cannot create an account");
+$createaccountForm->setPermError($GLOBALS['errorNoCreataccountPerm']);
 
 //Nopass-mode create account form
 $nopasscreateaccountForm = new Form();
 $nopasscreateaccountForm->addInput("text", "username", "Username", true, (isset($_GET["username"])) ? $_GET["username"] : "");
 $nopasscreateaccountForm->addInput("text", "email", "Email address", true, (isset($_GET["email"])) ? $_GET["email"] : "");
 $nopasscreateaccountForm->setPerm($currentUser->hasPerm("createaccount"));
-$nopasscreateaccountForm->setPermError("Sorry, you cannot create an account");
+$nopasscreateaccountForm->setPermError($GLOBALS['errorNoCreataccountPerm']);
 
 //Request account form
 $requestAccountForm = new Form();
 $requestAccountForm->addInput("text", "email", "Email address", true, "");
 $requestAccountForm->addInput("text", "name", "Your name", true, "");
 $requestAccountForm->setPerm($currentUser->hasPerm("requestaccount"));
-$requestAccountForm->setPermError("Sorry, you cannot request an account");
+$requestAccountForm->setPermError($GLOBALS['errorNoRequestaccountPerm']);
 
 //Rename user form
 $renameUserForm = new TokenForm();
 $renameUserForm->addInput("text", "newname", "New username", true, "");
 $renameUserForm->setPerm($currentUser->hasPerm("renameusers"));
-$renameUserForm->setPermError("Sorry, you cannot rename users");
+$renameUserForm->setPermError($GLOBALS['errorNoRenameusersPerm']);
 
 //Edit email form
 $editEmailForm = new TokenForm();
 $editEmailForm->addInput("text", "newEmail", "New email address", true, "");
 $editEmailForm->setPerm($currentUser->hasPerm("editemail"));
-$editEmailForm->setPermError("Sorry, you cannot edit a user's email address");
+$editEmailForm->setPermError($GLOBALS['errorNoEditemailPerm']);
 
 //Edit groups form, called by processGet.php
 function renderEditGroupsForm($username)
@@ -80,7 +80,7 @@ function renderEditGroupsForm($username)
         //without overwriting each others' tokens
         $editGroupsForm->addCSRF($_GET['action'] . $_GET['user']);
         $editGroupsForm->setPerm($currentUser->hasPerm("groupusers"));
-        $editGroupsForm->setPermError("Sorry, you cannot add or remove users from groups");
+        $editGroupsForm->setPermError($GLOBALS['errorNoGroupusersPerm']);
         $editGroupsForm->echoForm();
     }
 }
@@ -89,16 +89,16 @@ function renderEditGroupsForm($username)
 $deleteUserForm = new TokenForm();
 $deleteUserForm->addInput("checkbox", "confirmed", "Check this box to confirm", false, "");
 $deleteUserForm->setPerm($currentUser->hasPerm("deleteusers"));
-$deleteUserForm->setPermError("Sorry, you cannot delete users");
+$deleteUserForm->setPermError($GLOBALS['errorNoDeleteusersPerm']);
 
 //Undelete user form
 $undeleteUserForm = new TokenForm();
 $undeleteUserForm->addInput("checkbox", "confirmed", "Check this box to confirm", false, "");
 $undeleteUserForm->setPerm($currentUser->hasPerm("undeleteusers"));
-$undeleteUserForm->setPermError("Sorry, you cannot undelete users");
+$undeleteUserForm->setPermError($GLOBALS['errorNoUndeleteusersPerm']);
 
 //Decline requested account form
 $declineReqAcc = new TokenForm();
 $declineReqAcc->addInput("checkbox", "confirmed", "Check this box to confirm", false, "");
 $declineReqAcc->setPerm($currentUser->hasPerm("requestaccount-review"));
-$declineReqAcc->setPermError("Sorry, you cannot review account requests");
+$declineReqAcc->setPermError($GLOBALS['errorNoRequestaccount-reviewPerm']);

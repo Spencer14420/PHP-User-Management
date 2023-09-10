@@ -48,8 +48,7 @@ if (isset($_GET['verify'])) {
         $query->bind_param("s", $_POST['email']);
         $query->execute();
 
-        echo "The code you entered is incorrect<br><br>",
-        "<a href='index.php?action=login'>Try again</a>";
+        echo $GLOBALS['errorWrongCode'];
         exit();
     }
 

@@ -8,7 +8,8 @@ require_once __DIR__ . "/pageCheck.php";
 
 //Check for "requestaccount-review" permission
 if (!$currentUser->hasPerm("requestaccount-review")) {
-    exit("You do not have permission to view this page");
+    echo $GLOBALS['errorCannotView'];
+    exit();
 }
 
 $query = $mysqli->prepare("SELECT * FROM req_accounts");

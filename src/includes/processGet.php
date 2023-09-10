@@ -57,7 +57,7 @@ if ($_GET['action'] === "userlist") {
         $renameUserForm->addCSRF($_GET['action'] . $user->username);
         $renameUserForm->echoForm();
     } else {
-        echo "The user you have selected does not exist";
+        echo $GLOBALS['errorUserDoesNotExist'];
     }
     //Renameuser form
 } elseif (isset($_GET['user']) and $_GET['action'] === "editemail") {
@@ -73,7 +73,7 @@ if ($_GET['action'] === "userlist") {
         $editEmailForm->addCSRF($_GET['action'] . $user->username);
         $editEmailForm->echoForm();
     } else {
-        echo "The user you have selected does not exist";
+        echo $GLOBALS['errorUserDoesNotExist'];
     }
     //Edit groups form
 } elseif (isset($_GET['user']) and $_GET['action'] === "editgroups") {
@@ -83,7 +83,7 @@ if ($_GET['action'] === "userlist") {
         //Defined in forms.php
         renderEditGroupsForm($user->username);
     } else {
-        echo "The user you have selected does not exist";
+        echo $GLOBALS['errorUserDoesNotExist'];
     }
     //Delete user form
 } elseif (isset($_GET['user']) and $_GET['action'] === "delete") {
@@ -94,7 +94,7 @@ if ($_GET['action'] === "userlist") {
         $deleteUserForm->addCSRF($_GET['action'] . $user->username);
         $deleteUserForm->echoForm();
     } else {
-        echo "The user you have selected does not exist";
+        echo $GLOBALS['errorUserDoesNotExist'];
     }
     //Undelete user form
 } elseif (isset($_GET['user']) and $_GET['action'] === "undelete") {
@@ -105,7 +105,7 @@ if ($_GET['action'] === "userlist") {
         $undeleteUserForm->addCSRF($_GET['action'] . $user->username);
         $undeleteUserForm->echoForm();
     } else {
-        echo "The user you have selected does not exist";
+        echo $GLOBALS['errorUserDoesNotExist'];
     }
 } elseif (isset($_GET['user']) and $_GET['action'] === "declinereq") {
     include_once __DIR__ . "/classes/RequestedAccount.php";
@@ -116,6 +116,6 @@ if ($_GET['action'] === "userlist") {
         $declineReqAcc->addCSRF($_GET['action'] . $request->username);
         $declineReqAcc->echoForm();
     } else {
-        echo "An account with the username you have selected has not been requested";
+        echo $GLOBALS['errorNoRequestExists'];
     }
 }

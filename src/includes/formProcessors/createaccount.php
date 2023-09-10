@@ -4,7 +4,8 @@ require_once __DIR__ . "/../classes/User.php";
 require_once __DIR__ . "/../classes/RequestedAccount.php";
 
 if (!$currentUser->hasPerm("createaccount")) {
-    exit("Sorry, you cannot create an account");
+    echo $GLOBALS['errorNoCreataccountPerm'];
+    exit();
 }
 
 //Sanitize email and username
@@ -38,8 +39,7 @@ if ($user->exists) {
 //Check if email already exists
 $user = new User($_POST["email"], true);
 if ($user->exists) {
-    echo "An account with that email address already exists!<br><br>",
-    "<a href='index.php?action=createaccount'>Try again</a>";
+    echo $GLOBALS['errorCreateAccountEmailExists'];
     exit();
 }
 
@@ -61,8 +61,7 @@ if ($reqAccount->exists) {
 
 //Success message when not logged in
 if ($currentUser->username === false) {
-    echo "Your account has been created!<br><br>",
-    "<a href='index.php'>Log in</a>";
+    echo $GLOBALS['createAccountSuccess'];
 } else {
     //Success message when logged in
     echo "The account \"<b>{$username}</b>\" has been created";

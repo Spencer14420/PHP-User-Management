@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . "/../../config/mysql.php";
+require_once __DIR__ . "/../standardReq.php";
 
 class RequestedAccount
 {
@@ -47,7 +47,8 @@ class RequestedAccount
             $query->execute();
             exit("<b>Success</b><br><br>Request from <b>$this->sanitizedUsername</b> has been deleted");
         } else {
-            exit("Sorry, you cannot review account requests");
+            echo $GLOBALS['errorNoRequestaccount-reviewPerm'];
+            exit();
         }
     }
 
