@@ -1,9 +1,12 @@
 <?php
 
+require_once __DIR__ . "/Form.php";
+
 class Page
 {
     public $name;
     public $content;
+    public $form;
 
     function __construct($pageName)
     {
@@ -15,8 +18,15 @@ class Page
         $this->content = $content;
     }
 
+    public function setForm(Form $form)
+    {
+        $this->form = $form;
+    }
+
     public function echoContent()
     {
-        echo $this->content;
+        //Echoes the content and then form
+        echo "$this->content<br><br>";
+        $this->form->echoForm();
     }
 }
