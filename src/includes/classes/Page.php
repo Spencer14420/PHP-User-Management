@@ -5,8 +5,8 @@ require_once __DIR__ . "/Form.php";
 class Page
 {
     public $name;
-    public $content;
-    public $form;
+    private $content;
+    private $form;
 
     function __construct($pageName)
     {

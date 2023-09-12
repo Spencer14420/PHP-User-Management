@@ -55,4 +55,8 @@ if (isset($_GET['action'])) {
             require_once __DIR__ . "/formProcessors/declineReq.php";
         }
     }
+    //Custom form router
+    if ($_GET['action'] === "cfsubmit" and isset($_GET['form'])) {
+        include_once __DIR__ . "/../config/additionalFormProcessors/{$_GET['form']}.php";
+    }
 }
