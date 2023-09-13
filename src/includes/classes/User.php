@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . "/../../config/mysql.php";
+require_once __DIR__ . "/../standardReq.php";
 require_once __DIR__ . "/../../config/defaultPerms.php";
 
 class User
@@ -133,5 +133,18 @@ class User
         $query->execute();
         $result = $query->get_result();
         return $result->fetch_assoc()['email'];
+    }
+
+    public function inspect()
+    {
+        global $currentUser;
+        if ($currentUser->hasPerm("inspectuser")) {
+            echo "Inspecting <b>$this->sanitizedUsername</b><br>";
+            echo "<pre>";
+            var_dump($this);
+            echo "</pre>";
+        } else {
+            echo $GLOBALS['errorNoInspectuserPerm'];
+        }
     }
 }

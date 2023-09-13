@@ -33,5 +33,8 @@ while ($row = $result->fetch_assoc()) {
     if ($currentUser->hasPerm("editemail")) {
         echo " <a href=index.php?action=editemail&user=$user->sanitizedUsername>(Edit email)</a>";
     }
+    if ($currentUser->hasPerm("inspectuser")) {
+        echo " <a href=index.php?action=inspectuser&user=$user->sanitizedUsername>(Inspect)</a>";
+    }
     echo "<br><br>";
 }

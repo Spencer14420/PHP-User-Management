@@ -136,6 +136,7 @@ if (isset($_GET['page'])) {
         } else {
             echo $GLOBALS['errorUserDoesNotExist'];
         }
+        //Declinereq form
     } elseif (isset($_GET['user']) and $_GET['action'] === "declinereq") {
         include_once __DIR__ . "/classes/RequestedAccount.php";
         $request = new RequestedAccount($_GET['user']);
@@ -147,5 +148,9 @@ if (isset($_GET['page'])) {
         } else {
             echo $GLOBALS['errorNoRequestExists'];
         }
+        //Inspectuser
+    } elseif (isset($_GET['user']) and $_GET['action'] === "inspectuser") {
+        $user = new User($_GET['user']);
+        $user->inspect();
     }
 }

@@ -134,3 +134,9 @@ CONTENT;
 $GLOBALS['errorNoRequestExists'] = <<<CONTENT
     An account with the username you have selected has not been requested
 CONTENT;
+
+//Inspect User Messages
+
+$GLOBALS['errorNoInspectuserPerm'] = <<<CONTENT
+    Sorry, you cannot inspect users
+CONTENT;
