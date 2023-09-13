@@ -5,8 +5,8 @@ require_once __DIR__ . "/Form.php";
 class Page
 {
     public $name;
-    private $content;
-    private $form;
+    private $content = false;
+    private $form = false;
 
     function __construct($pageName)
     {
@@ -26,7 +26,11 @@ class Page
     public function echoContent()
     {
         //Echoes the content and then form
-        echo "$this->content<br><br>";
-        $this->form->echoForm();
+        if ($this->content) {
+            echo "$this->content<br><br>";
+        }
+        if ($this->form) {
+            $this->form->echoForm();
+        }
     }
 }
