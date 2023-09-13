@@ -11,7 +11,7 @@ class User
     public $exists;
     public $deleted;
     public $formattedUsername;
-    protected $userid;
+    public $userid;
     private $groups;
     private $userPerms;
 
