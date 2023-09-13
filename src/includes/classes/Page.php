@@ -5,12 +5,18 @@ require_once __DIR__ . "/Form.php";
 class Page
 {
     public $name;
-    private $content;
-    private $form;
+    private $includes = [];
+    private $content = false;
+    private $form = false;
 
     function __construct($pageName)
     {
         $this->name = $pageName;
+    }
+
+    public function addInclude($file)
+    {
+        $this->includes[] = $file;
     }
 
     public function setContent($content)
@@ -25,8 +31,18 @@ class Page
 
     public function echoContent()
     {
-        //Echoes the content and then form
-        echo "$this->content<br><br>";
-        $this->form->echoForm();
+        //Includes all the specified files and echoes the content and the form
+        if ($this->includes) {
+            foreach ($this->includes as $include) {
+                include_once $include;
+            }
+        }
+
+        if ($this->content) {
+            echo "$this->content<br><br>";
+        }
+        if ($this->form) {
+            $this->form->echoForm();
+        }
     }
 }

@@ -8,3 +8,4 @@ $pages = [];
 $pages["example"] = new Page("example");
 $pages["example"]->setContent("This is an example page");
 $pages["example"]->setForm($demoForm);
+$pages["example"]->addInclude(__DIR__ . "/exampleInclude.php");
