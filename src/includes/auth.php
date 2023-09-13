@@ -29,6 +29,8 @@ function auth()
     $username = $result->fetch_assoc()['username'];
     $currentUser = new User($username);
 
+    $GLOBALS['currentUser'] = $currentUser;
+
     if ($currentUser->deleted) {
         require_once __DIR__ . "/../logout.php";
     }
