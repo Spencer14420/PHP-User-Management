@@ -9,7 +9,11 @@ $result = $query->get_result();
 
 while ($row = $result->fetch_assoc()) {
 
-    $user = new User($row['username']);
+    if (isset($_GET['user'])) {
+        $user = new User($_GET['user']);
+    } else {
+        $user = new User($row['username']);
+    }
     $deleteAction = ($user->deleted) ? "undelete" : "delete";
 
     //Hide the user if it is deleted,
@@ -34,4 +38,9 @@ while ($row = $result->fetch_assoc()) {
         echo " <a href=index.php?action=editemail&user=$user->sanitizedUsername>(Edit email)</a>";
     }
     echo "<br><br>";
+
+    //Only run once if a user is specified in the URL
+    if (isset($_GET['user'])) {
+        break;
+    }
 }
