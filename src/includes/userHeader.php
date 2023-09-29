@@ -1,12 +1,20 @@
 <?php
 //Include on page to add "Logged in as [User] | Log Out" etc.
 require_once __DIR__ . "/auth.php";
+require_once __DIR__ . "/pages.php";
 if ($currentUser->username !== false) {
     echo "Logged in as {$currentUser->username}";
-    if ($currentUser->hasPerm("renameusers") or $currentUser->hasPerm("deleteusers") or $currentUser->hasPerm("groupusers")) {
-        echo " | <a href='index.php?action=userlist'>Edit Users</a>";
-    } elseif ($currentUser->hasPerm("view")) {
-        echo " | <a href='index.php?action=userlist'>User List</a>";
+
+    if ($currentUser->hasPerm("view")) {
+        //Link to pages
+        foreach ($pages as $page) {
+            if ($page->headerLink) {
+                echo " | <a href='index.php?page=$page->name'>$page->headerLink</a>";
+            }
+        }
+        if ($currentUser->hasPerm("renameusers") or $currentUser->hasPerm("deleteusers") or $currentUser->hasPerm("groupusers")) {
+            echo " | <a href='index.php?action=userlist'>Edit Users</a>";
+        }
     }
     //Show "Create Account" link if createaccount permission is restricted to specific groups
     if (!in_array("createaccount", $perms["all"]) and $currentUser->hasPerm("createaccount")) {
