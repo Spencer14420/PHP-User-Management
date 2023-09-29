@@ -15,14 +15,18 @@ class User
     private $groups;
     private $userPerms;
 
-    function __construct($usernameOrEmail, $enteredEmail = false)
+    function __construct($creationData, $createFrom = "username")
     {
-        if ($enteredEmail) {
-            $this->email = $usernameOrEmail;
-            $this->username = $this->getUsernameFromEmail();
-        } else {
-            $this->username = $usernameOrEmail;
+        if ($createFrom === "username") {
+            $this->username = $creationData;
             $this->email = $this->getEmailFromUsername();
+        } elseif ($createFrom === "id") {
+            $this->userid = $creationData;
+            $this->username = $this->getUsernameFromId();
+            $this->email = $this->getEmailFromUsername();
+        } else {
+            $this->email = $creationData;
+            $this->username = $this->getUsernameFromEmail();
         }
         $this->sanitizedUsername = htmlspecialchars($this->username);
         $this->sanitizedEmail = htmlspecialchars($this->email);
@@ -133,5 +137,15 @@ class User
         $query->execute();
         $result = $query->get_result();
         return $result->fetch_assoc()['email'];
+    }
+
+    private function getUsernameFromId()
+    {
+        global $mysqli;
+        $query = $mysqli->prepare("SELECT username FROM users WHERE id = ?");
+        $query->bind_param("i", $this->userid);
+        $query->execute();
+        $result = $query->get_result();
+        return $result->fetch_assoc()['username'];
     }
 }
