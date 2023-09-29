@@ -8,10 +8,12 @@ class Page
     private $includes = [];
     private $content = false;
     private $form = false;
+    public $headerLink;
 
-    function __construct($pageName)
+    function __construct($pageName, $headerLink = false)
     {
         $this->name = $pageName;
+        $this->headerLink = $headerLink;
     }
 
     public function addInclude($file)
